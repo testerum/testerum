@@ -7,6 +7,7 @@ import com.testerum.model.feature.hooks.Hooks
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.util.escape
 
 data class Feature @JsonCreator constructor(@JsonProperty("name") val name: String,
                                             @JsonProperty("path") override val path: Path,
@@ -48,4 +49,18 @@ data class Feature @JsonCreator constructor(@JsonProperty("name") val name: Stri
     }
 
     override fun toString() = "Feature(name=$name, path=$path)"
+
+    companion object {
+        /**
+         * Creates a Feature instance for a directory that doesn't have an "info.feat" file.
+         */
+        fun createVirtualFeature(path: Path): Feature {
+            val escapedPath = path.withoutFile().escape()
+
+            return Feature(
+                name = escapedPath.directories.lastOrNull() ?: "",
+                path = escapedPath
+            )
+        }
+    }
 }

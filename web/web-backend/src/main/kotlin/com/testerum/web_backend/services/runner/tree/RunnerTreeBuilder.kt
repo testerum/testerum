@@ -1,6 +1,7 @@
 package com.testerum.model.runner.tree
 
 import com.testerum.file_service.caches.resolved.FeaturesCache
+import com.testerum.model.feature.Feature
 import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
@@ -47,7 +48,7 @@ class RunnerTreeBuilder(val featureCache: FeaturesCache) {
 private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFactory<RunnerRootNode, RunnerFeatureNode> {
 
     override fun createRootNode(item: HasPath?): RunnerRootNode {
-        val root = featureCache.getFeatureAtPath(Path.EMPTY) ?: throw RuntimeException("Root feature could not be found in cache")
+        val root = featureCache.getFeatureAtPath(Path.EMPTY) ?: Feature.createVirtualFeature(Path.EMPTY)
 
         val rootNodeId = RunnerIdCreator.getRootId()
         val beforeAllId = RunnerIdCreator.getHookContainerId(rootNodeId, HookPhase.BEFORE_ALL_TESTS)
@@ -67,7 +68,7 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
     }
 
     override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeatureNode {
-        val feature = featureCache.getFeatureAtPath(path) ?: throw RuntimeException("Feature at path [${path.toString()}] is not found in cache")
+        val feature = featureCache.getFeatureAtPath(path) ?: Feature.createVirtualFeature(Path.EMPTY)
 
         val parentNodeAsHooksContainer = parentNode as RunnerHooksContainerNode
         val featureId = RunnerIdCreator.getFeatureId(parentNodeAsHooksContainer.id, path)

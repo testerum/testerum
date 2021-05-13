@@ -44,12 +44,14 @@ class RunnerBeforeHooks(
     }
 
     private fun logHooksStart(context: RunnerContext) {
-        context.logEvent(
-            HooksStartEvent(
-                eventKey = eventKey,
-                hookPhase = hookPhase
+        if (hasUserDefinedHooks()) {
+            context.logEvent(
+                HooksStartEvent(
+                    eventKey = eventKey,
+                    hookPhase = hookPhase
+                )
             )
-        )
+        }
     }
 
     private fun logHooksEnd(
@@ -57,15 +59,19 @@ class RunnerBeforeHooks(
         status: ExecutionStatus,
         startTime: Long
     ) {
-        context.logEvent(
-            HooksEndEvent(
-                eventKey = eventKey,
-                hookPhase = hookPhase,
-                status = status,
-                durationMillis = System.currentTimeMillis() - startTime
+        if (hasUserDefinedHooks()) {
+            context.logEvent(
+                HooksEndEvent(
+                    eventKey = eventKey,
+                    hookPhase = hookPhase,
+                    status = status,
+                    durationMillis = System.currentTimeMillis() - startTime
+                )
             )
-        )
+        }
     }
+
+    private fun hasUserDefinedHooks() = hooks.find { it !is RunnerBasicHook } != null
 
     override fun toString(): String = buildString { addToString(this, 0) }
 
