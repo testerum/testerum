@@ -28,7 +28,7 @@ class RunnerTest(
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    override val id: String = RunnerIdCreator.getTestId(parent.id, test)
+    override val id: String = RunnerIdCreator.getTestId(test)
 
     private val children = mutableListOf<RunnerStep>()
 

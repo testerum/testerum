@@ -1,17 +1,17 @@
-package com.testerum.model.runner.tree
+package com.testerum.web_backend.services.runner.tree
 
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.runner.tree.TestPathAndModel
 import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.runner.tree.model.RunnerBasicStepNode
 import com.testerum.model.runner.tree.model.RunnerComposedStepNode
 import com.testerum.model.runner.tree.model.RunnerFeatureNode
 import com.testerum.model.runner.tree.model.RunnerHooksContainerNode
 import com.testerum.model.runner.tree.model.RunnerHooksNode
-import com.testerum.model.runner.tree.model.RunnerNode
 import com.testerum.model.runner.tree.model.RunnerParametrizedTestNode
 import com.testerum.model.runner.tree.model.RunnerRootNode
 import com.testerum.model.runner.tree.model.RunnerScenarioNode
@@ -113,7 +113,7 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
             }
 
             val runnerParametrizedTestNode = RunnerParametrizedTestNode(
-                id = RunnerIdCreator.getParametrizedTestId((parentNode as RunnerNode).id, testPathAndModel.model),
+                id = RunnerIdCreator.getParametrizedTestId(testPathAndModel.model),
                 name = testPathAndModel.model.name,
                 path = testPathAndModel.model.path
             )
@@ -134,7 +134,7 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
 
         } else {
 
-            val testId = RunnerIdCreator.getTestId((parentNode as RunnerNode).id, testPathAndModel.model)
+            val testId = RunnerIdCreator.getTestId(testPathAndModel.model)
             val parentNodeAsHooksContainer = parentNode as RunnerHooksContainerNode
             val beforeEachId = RunnerIdCreator.getHookContainerId(testId, HookPhase.BEFORE_EACH_TEST)
             val afterEachId = RunnerIdCreator.getHookContainerId(testId, HookPhase.AFTER_EACH_TEST)
@@ -173,7 +173,7 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
         val originalScenarioIndex = scenarioWithOriginalIndex.first
         val scenario = scenarioWithOriginalIndex.second
 
-        val scenarioId = RunnerIdCreator.getScenarioId((parentNode as RunnerNode).id, filteredScenarioIndex, test)
+        val scenarioId = RunnerIdCreator.getScenarioId(filteredScenarioIndex, test)
         val beforeEachId = RunnerIdCreator.getHookContainerId(scenarioId, HookPhase.BEFORE_EACH_TEST)
         val afterEachId = RunnerIdCreator.getHookContainerId(scenarioId, HookPhase.AFTER_EACH_TEST)
         val afterHooksId = RunnerIdCreator.getAfterTestHookContainerId(scenarioId)

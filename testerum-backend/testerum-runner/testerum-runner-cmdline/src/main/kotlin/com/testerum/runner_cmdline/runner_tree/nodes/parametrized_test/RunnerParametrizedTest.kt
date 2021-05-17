@@ -22,7 +22,7 @@ class RunnerParametrizedTest(
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), TreeNode {
 
-    override val id: String = RunnerIdCreator.getParametrizedTestId(parent.id, test)
+    override val id: String = RunnerIdCreator.getParametrizedTestId(test)
 
     lateinit var scenarios: List<RunnerScenario>
 

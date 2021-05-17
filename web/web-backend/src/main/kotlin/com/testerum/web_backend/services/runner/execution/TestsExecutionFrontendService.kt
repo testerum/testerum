@@ -7,7 +7,7 @@ import com.testerum.common_kotlin.isDirectory
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.runner.config.RunConfig
-import com.testerum.model.runner.tree.RunnerTreeBuilder
+import com.testerum.web_backend.services.runner.tree.RunnerTreeBuilder
 import com.testerum.model.runner.tree.TestPathAndModel
 import com.testerum.model.runner.tree.model.RunnerRootNode
 import com.testerum.model.test.TestModel

@@ -43,7 +43,7 @@ class RunnerScenario(
         )
     }
 
-    override val id: String = RunnerIdCreator.getScenarioId(parent.id, filteredScenarioIndex, test)
+    override val id: String = RunnerIdCreator.getScenarioId(filteredScenarioIndex, test)
 
     private lateinit var children: List<RunnerStep>
 

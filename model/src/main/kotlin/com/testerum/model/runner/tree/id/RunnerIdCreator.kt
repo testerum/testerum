@@ -19,21 +19,18 @@ object RunnerIdCreator {
     }
 
     fun getTestId(
-        parentNodeId: String,
         test: TestModel
     ): String {
         return "${getRootId()}/${test.id}"
     }
 
     fun getParametrizedTestId(
-        parentNodeId: String,
         test: TestModel
     ): String {
         return "${getRootId()}/${test.id}"
     }
 
     fun getScenarioId(
-        parentNodeId: String,
         nodeIndexInParent: Int,
         test: TestModel
     ): String {
