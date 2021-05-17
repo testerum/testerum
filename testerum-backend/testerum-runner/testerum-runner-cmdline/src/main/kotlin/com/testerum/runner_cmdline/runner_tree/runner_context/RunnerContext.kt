@@ -1,10 +1,10 @@
 package com.testerum.runner_cmdline.runner_tree.runner_context
 
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.runner_api_services.TestVariablesImpl
@@ -44,7 +44,7 @@ data class RunnerContext(
         eventsService.logEvent(
             TextLogEvent(
                 time = LocalDateTime.now(),
-                eventKey = EventKey.LOG_EVENT_KEY,
+                eventKey = RunnerIdCreator.getRootId(),
                 logLevel = logLevel,
                 message = message,
                 exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) }

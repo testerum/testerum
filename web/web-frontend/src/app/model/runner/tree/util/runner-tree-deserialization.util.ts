@@ -7,11 +7,19 @@ import { RunnerStepNode } from "../runner-step-node.model";
 import { RunnerUndefinedStepNode } from "../runner-undefined-step-node.model";
 import {RunnerParametrizedTestNode} from "../runner-parametrized-test.node";
 import {RunnerScenarioNode} from "../runner-scenario-node.model";
+import {RunnerHooksNode} from "../runner-hooks-node.model";
 
 export class RunnerTreeDeserializationUtil {
 
     public static deserializeRunnerTestOrFeatureNodes(inputNodes: Object[]): RunnerTestOrFeatureNode[] {
         return inputNodes.map((inputNode) => RunnerTreeDeserializationUtil.deserializeRunnerTestOrFeatureNode(inputNode));
+    }
+
+    public static deserializeRunnerHooksNodes(inputNode: Object): RunnerHooksNode {
+        if (inputNode["@type"] == "RUNNER_HOOKS_NODE") {
+            return new RunnerHooksNode().deserialize(inputNode)
+        }
+        throw Error(`unknown node type [${inputNode["@type"]}]`);
     }
 
     private static deserializeRunnerTestOrFeatureNode(inputNode: Object): RunnerTestOrFeatureNode {

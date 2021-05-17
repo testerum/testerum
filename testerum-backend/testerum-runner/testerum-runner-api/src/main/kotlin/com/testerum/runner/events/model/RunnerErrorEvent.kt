@@ -2,7 +2,7 @@ package com.testerum.runner.events.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.testerum.runner.events.model.position.EventKey
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import java.time.LocalDateTime
 
 /*
@@ -15,7 +15,6 @@ data class RunnerErrorEvent @JsonCreator constructor(
 ): RunnerEvent {
 
     @get:JsonProperty("eventKey")
-    override val eventKey: EventKey
-        get() = EventKey.SUITE_EVENT_KEY
+    override val eventKey = RunnerIdCreator.getRootId()
 
 }

@@ -1,5 +1,4 @@
 import {RunnerEvent} from "./runner.event";
-import {EventKey} from "./fields/event-key.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {ExceptionDetail} from "./fields/exception-detail.model";
@@ -7,7 +6,7 @@ import {LogLevel} from "./enums/log-level.enum";
 
 export class TextLogEvent implements RunnerEvent, Serializable<TextLogEvent> {
     time: Date;
-    eventKey: EventKey;
+    eventKey: string;
     eventType: RunnerEventTypeEnum = RunnerEventTypeEnum.LOG_EVENT;
 
     logLevel: LogLevel;
@@ -15,7 +14,7 @@ export class TextLogEvent implements RunnerEvent, Serializable<TextLogEvent> {
     exceptionDetail: ExceptionDetail | null;
 
     deserialize(input: Object): TextLogEvent {
-        this.eventKey = new EventKey().deserialize(input["eventKey"]);
+        this.eventKey = input["eventKey"];
         this.time = new Date(input["time"]);
         this.message = input["message"];
         if (input["exceptionDetail"]) {

@@ -14,6 +14,7 @@ import {UrlService} from "../../../../../../service/url.service";
 import {RunnerScenarioTreeNodeModel} from "../../model/runner-scenario-tree-node.model";
 import {RunnerParametrizedTestTreeNodeModel} from "../../model/runner-parametrized-test-tree-node.model";
 import {RunnerRootTreeNodeModel} from "../../model/runner-root-tree-node.model";
+import {RunnerHookTreeNodeModel} from "../../model/runner-hook-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -62,6 +63,9 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     isScenarioNode(): boolean {
         return this.model instanceof RunnerScenarioTreeNodeModel;
     }
+    isHooksContainerNode(): boolean {
+        return this.model instanceof RunnerHookTreeNodeModel;
+    }
     isStepNode(): boolean {
         return this.model instanceof RunnerComposedStepTreeNodeModel || this.model instanceof RunnerBasicStepTreeNodeModel
     }
@@ -73,6 +77,7 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         let result = "";
         if(this.isTestSuiteNode()) result += "Test Suite";
         if(this.isFeatureNode()) result += "Feature";
+        if(this.isHooksContainerNode()) result += "Hooks";
         if(this.isTestNode()) result += "Test";
         if(this.isScenarioNode()) result += "Scenario";
         if(this.isStepNode()) result += "Step";

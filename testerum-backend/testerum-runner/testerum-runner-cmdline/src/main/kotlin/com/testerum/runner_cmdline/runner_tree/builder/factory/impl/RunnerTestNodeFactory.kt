@@ -1,14 +1,16 @@
 package com.testerum.runner_cmdline.runner_tree.builder.factory.impl
 
-import com.testerum.model.feature.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase.AFTER_EACH_TEST
+import com.testerum.model.feature.hooks.HookPhase.AFTER_TEST
+import com.testerum.model.feature.hooks.HookPhase.BEFORE_EACH_TEST
 import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.runner_cmdline.runner_tree.builder.TestWithFilePath
 import com.testerum.runner_cmdline.runner_tree.builder.factory.util.InheritedHooksFinder
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBasicHook
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerComposedHook
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.TestHookSource
@@ -47,12 +49,16 @@ object RunnerTestNodeFactory {
         // test steps
         for ((stepIndexInParent, stepCall) in item.test.stepCalls.withIndex()) {
             runnerTest.addChild(
-                RunnerStepNodeFactory.create(runnerTest, stepIndexInParent, stepCall, logEvents = true)
+                RunnerStepNodeFactory.create(runnerTest, stepIndexInParent, stepCall)
             )
         }
 
-        runnerTest.setAfterHooks(
-            getAfterHooks(runnerTest, item, afterEachTestBasicHooks)
+        runnerTest.setAfterTestHooks(
+            getAfterTestHooks(runnerTest, item)
+        )
+
+        runnerTest.setAfterEachHooks(
+            getAfterEachHooks(runnerTest, afterEachTestBasicHooks)
         )
 
         return runnerTest
@@ -61,7 +67,9 @@ object RunnerTestNodeFactory {
     private fun getBeforeHooks(
         runnerTest: RunnerTest,
         beforeEachTestBasicHooks: List<RunnerBasicHook>
-    ): RunnerBeforeHooksList {
+    ): RunnerBeforeHooks {
+        val beforeHooksContainer = RunnerBeforeHooks(runnerTest, BEFORE_EACH_TEST)
+
         val beforeHooks = mutableListOf<RunnerHook>()
 
         // before hooks: basic before-each
@@ -69,50 +77,63 @@ object RunnerTestNodeFactory {
 
         // before hooks: parent features before-each
         beforeHooks += InheritedHooksFinder.find(
-            parentForHooks = runnerTest,
-            phase = HookPhase.BEFORE_EACH_TEST,
+            parentForHooks = beforeHooksContainer,
+            phase = BEFORE_EACH_TEST,
             descendingFromRoot = true
         )
 
-        return RunnerBeforeHooksList(beforeHooks)
+        beforeHooksContainer.hooks = beforeHooks
+        return beforeHooksContainer
     }
 
-    private fun getAfterHooks(
+    private fun getAfterTestHooks(
         runnerTest: RunnerTest,
-        item: TestWithFilePath,
-        afterEachTestBasicHooks: List<RunnerBasicHook>
-    ): RunnerAfterHooksList {
-        val afterHooks = mutableListOf<RunnerHook>()
+        item: TestWithFilePath
+    ): RunnerAfterHooks {
+        val afterTestHooksContainer = RunnerAfterHooks(runnerTest, AFTER_TEST)
+
+        val afterTestHooks = mutableListOf<RunnerHook>()
 
         //  hooks: test after
-        for (hookStepCall in item.test.afterHooks) {
+        for ((index, hookStepCall) in item.test.afterHooks.withIndex()) {
             val runnerComposedHook = RunnerComposedHook(
-                parent = runnerTest,
-                indexInParent = afterHooks.size,
-                phase = HookPhase.AFTER_EACH_TEST,
+                parent = afterTestHooksContainer,
+                phase = AFTER_TEST,
                 source = TestHookSource(testPath = item.test.path)
             )
             runnerComposedHook.setStep(
                 RunnerStepNodeFactory.create(
                     parentNode = runnerComposedHook,
-                    indexInParent = 0,
-                    stepCall = hookStepCall,
-                    logEvents = false
+                    indexInParent = index,
+                    stepCall = hookStepCall
                 )
             )
-            afterHooks += runnerComposedHook
+            afterTestHooks += runnerComposedHook
         }
 
+        afterTestHooksContainer.hooks = afterTestHooks
+        return afterTestHooksContainer
+    }
+
+    private fun getAfterEachHooks(
+        runnerTest: RunnerTest,
+        afterEachTestBasicHooks: List<RunnerBasicHook>
+    ): RunnerAfterHooks {
+        val afterEachHooksContainer = RunnerAfterHooks(runnerTest, AFTER_EACH_TEST)
+
+        val afterEachHooks = mutableListOf<RunnerHook>()
+
         // after hooks: parent features after-each
-        afterHooks += InheritedHooksFinder.find(
-            parentForHooks = runnerTest,
-            phase = HookPhase.AFTER_EACH_TEST,
+        afterEachHooks += InheritedHooksFinder.find(
+            parentForHooks = afterEachHooksContainer,
+            phase = AFTER_EACH_TEST,
             descendingFromRoot = false
         )
 
         // after hooks: basic after-each
-        afterHooks += afterEachTestBasicHooks
+        afterEachHooks += afterEachTestBasicHooks
 
-        return RunnerAfterHooksList(afterHooks)
+        afterEachHooksContainer.hooks = afterEachHooks
+        return afterEachHooksContainer
     }
 }

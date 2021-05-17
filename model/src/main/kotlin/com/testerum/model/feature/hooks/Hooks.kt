@@ -30,6 +30,7 @@ data class Hooks @JsonCreator constructor(
             HookPhase.BEFORE_EACH_TEST -> beforeEach
             HookPhase.AFTER_EACH_TEST -> afterEach
             HookPhase.AFTER_ALL_TESTS -> afterAll
+            HookPhase.AFTER_TEST -> emptyList()
         }
     }
 }

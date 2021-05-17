@@ -1,5 +1,4 @@
 import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
-import {EventKey} from "../../../../../model/test/event/fields/event-key.model";
 import {JsonTreeNodeState} from "../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {RunnerTestTreeNodeModel} from "./runner-test-tree-node.model";
@@ -12,7 +11,6 @@ export class RunnerFeatureTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
     path: Path;
-    eventKey: EventKey;
     state:ExecutionStatusEnum = ExecutionStatusEnum.WAITING;
     text:string;
 

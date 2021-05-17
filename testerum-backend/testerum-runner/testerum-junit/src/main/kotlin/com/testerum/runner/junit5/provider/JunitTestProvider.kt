@@ -1,6 +1,7 @@
 package com.testerum.runner.junit5.provider
 
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.cmdline.report_type.builder.impl.JUnitReportTypeBuilder
@@ -14,7 +15,6 @@ import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.junit5.logger.JUnitEventLogger
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
@@ -157,7 +157,7 @@ class JunitTestProvider(
                         bootstrapper.runnerModuleFactory.eventsService.logEvent(
                             TextLogEvent(
                                 time = LocalDateTime.now(),
-                                eventKey = EventKey.LOG_EVENT_KEY,
+                                eventKey = RunnerIdCreator.getRootId(),
                                 logLevel = LogLevel.INFO,
                                 message = line,
                                 exceptionDetail = null

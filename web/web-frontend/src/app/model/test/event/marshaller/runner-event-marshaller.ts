@@ -15,6 +15,8 @@ import {ParametrizedTestEndEvent} from "../parametrized-test-end.event";
 import {ScenarioStartEvent} from "../scenario-start.event";
 import {ScenarioEndEvent} from "../scenario-end.event";
 import {ConfigurationEvent} from "../configuration.event";
+import {HooksStartEvent} from "../hooks-start.event";
+import {HooksEndEvent} from "../hooks-end.event";
 
 export const RunnerEventMarshaller = {
     deserializeRunnerEvent: (runnerEventAsJson: object): RunnerEvent => {
@@ -30,6 +32,8 @@ export const RunnerEventMarshaller = {
             case "PARAMETRIZED_TEST_END_EVENT"  : return new ParametrizedTestEndEvent().deserialize(runnerEventAsJson);
             case "SCENARIO_START_EVENT"         : return new ScenarioStartEvent().deserialize(runnerEventAsJson);
             case "SCENARIO_END_EVENT"           : return new ScenarioEndEvent().deserialize(runnerEventAsJson);
+            case "HOOKS_START_EVENT"            : return new HooksStartEvent().deserialize(runnerEventAsJson);
+            case "HOOKS_END_EVENT"              : return new HooksEndEvent().deserialize(runnerEventAsJson);
             case "STEP_START_EVENT"             : return new StepStartEvent().deserialize(runnerEventAsJson);
             case "STEP_END_EVENT"               : return new StepEndEvent().deserialize(runnerEventAsJson);
             case "LOG_EVENT"                    : return new TextLogEvent().deserialize(runnerEventAsJson);

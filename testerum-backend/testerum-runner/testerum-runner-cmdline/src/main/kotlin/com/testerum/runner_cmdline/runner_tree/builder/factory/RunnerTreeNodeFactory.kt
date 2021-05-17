@@ -40,10 +40,12 @@ class RunnerTreeNodeFactory(
     }
 
     override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeature {
+        val parent: RunnerTreeNode = parentNode as? RunnerTreeNode
+            ?: throw IllegalArgumentException("unexpected parent note type [${parentNode.javaClass}]: [$parentNode]")
+
         return RunnerFeature(
-            parent = parentNode,
-            indexInParent = parentNode.childrenCount,
-            featurePathFromRoot = path.directories,
+            parent = parent,
+            path = path,
             featureName = path.directories.last(),
             tags = emptyList(),
             feature = Feature(
