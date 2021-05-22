@@ -1,7 +1,6 @@
 import { Path } from "../../infrastructure/path/path.model";
 import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
 import { RunnerTestOrFeatureNode } from "./runner-test-or-feature-node.model";
-import { RunnerStepNode } from "./runner-step-node.model";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {RunnerScenarioNode} from "./runner-scenario-node.model";
 

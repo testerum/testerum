@@ -98,6 +98,11 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
     @extend .fa-stream;
 }
 
+.fa_my-hook {
+    @extend .nf;
+    @extend .nf-mdi-hook;
+}
+
 .fa_my-step {
     @extend .fas;
     @extend .fa-shoe-prints;

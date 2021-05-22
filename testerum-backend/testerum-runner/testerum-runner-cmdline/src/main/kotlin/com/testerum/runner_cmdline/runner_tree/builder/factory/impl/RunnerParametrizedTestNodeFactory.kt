@@ -2,8 +2,8 @@ package com.testerum.runner_cmdline.runner_tree.builder.factory.impl
 
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.tests_finder.ScenariosTestPath
-import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.runner_cmdline.runner_tree.builder.TestWithFilePath
+import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBasicHook
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerScenario
@@ -15,7 +15,7 @@ object RunnerParametrizedTestNodeFactory {
 
     fun create(
         item: TestWithFilePath,
-        parentNode: ContainerTreeNode,
+        parentNode: RunnerTreeNode,
         indexInParent: Int,
         beforeEachTestBasicHooks: List<RunnerBasicHook>,
         afterEachTestBasicHooks: List<RunnerBasicHook>
@@ -42,8 +42,8 @@ object RunnerParametrizedTestNodeFactory {
                 afterEachTestBasicHooks = afterEachTestBasicHooks
             )
         }
-        runnerParametrizedTest.scenarios = runnerScenariosNodes
 
+        runnerParametrizedTest.scenarios = runnerScenariosNodes
         return runnerParametrizedTest
     }
 

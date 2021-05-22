@@ -3,21 +3,24 @@ import {Injectable} from "@angular/core";
 import {Message} from "../model/messages/message.model";
 import {MessageKey} from "../model/messages/message.enum";
 import {HttpClient} from "@angular/common/http";
-
+import {Location} from "@angular/common";
 
 @Injectable()
 export class MessageService {
 
     private messages: Object;
 
-    private BASE_URL = "/rest/messages";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/messages");
+    }
 
     init() {
         return new Promise((resolve, reject) => {
             this.http
-                .get<Array<Message>>(this.BASE_URL).pipe(
+                .get<Array<Message>>(this.baseUrl).pipe(
                 map(this.extractMessages))
                 .subscribe( result => {
                     this.messages = result;

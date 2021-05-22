@@ -3,6 +3,7 @@ package com.testerum.report_generators.reports.report_model.base
 import com.fasterxml.jackson.databind.ObjectWriter
 import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLoggerStack
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportFeatureMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportHooksMapper
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportParametrizedTestMapper
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportScenarioMapper
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportStepMapper
@@ -15,6 +16,8 @@ import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.HooksEndEvent
+import com.testerum.runner.events.model.HooksStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.ScenarioEndEvent
@@ -27,6 +30,7 @@ import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
+import com.testerum.runner.report_model.ReportFeature
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
@@ -123,7 +127,7 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
 
         val featureLogger = loggerStack.pop()
 
-        val reportFeature = ReportFeatureMapper.mapReportFeature(
+        val reportFeature: ReportFeature = ReportFeatureMapper.mapReportFeature(
                 startEvent = featureStartEvent,
                 endEvent = featureEndEvent,
                 destinationDirectory = destinationDirectory,
@@ -300,6 +304,73 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         )
 
         eventsStack.push(reportTest)
+    }
+
+    final override fun onHooksStart(event: HooksStartEvent) {
+        eventsStack.push(event)
+
+        val logBaseName = eventsStack.computeCurrentHooksLogBaseName()
+        loggerStack.push(
+            textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
+            modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
+        )
+    }
+
+    final override fun onHooksEnd(event: HooksEndEvent) {
+        @Suppress("UnnecessaryVariable")
+        val hooksEndEvent = event
+
+        val logs = ArrayDeque<ReportLog>()
+        var hooksStartEvent: HooksStartEvent? = null
+        val children = ArrayDeque<ReportStep>()
+
+        var done = false
+        while (!done) {
+            val eventFromStack: Any? = eventsStack.popOrNull()
+
+            if (eventFromStack == null) {
+                done = true
+            } else {
+                when (eventFromStack) {
+                    is TextLogEvent -> {
+                        logs.addFirst(
+                            ReportLog(
+                                time = eventFromStack.time,
+                                logLevel = eventFromStack.logLevel,
+                                message = eventFromStack.message,
+                                exceptionDetail = eventFromStack.exceptionDetail
+                            )
+                        )
+                    }
+                    is HooksStartEvent -> {
+                        hooksStartEvent = eventFromStack
+                        done = true
+                    }
+                    is ReportStep -> {
+                        children.addFirst(eventFromStack)
+                    }
+                }
+            }
+        }
+
+        if (hooksStartEvent == null) {
+            throw IllegalStateException(
+                "Got ${HooksEndEvent::class.simpleName} [$hooksEndEvent]" +
+                    " without a corresponding previous ${HooksStartEvent::class.simpleName}"
+            )
+        }
+
+        val hooksLogger = loggerStack.pop()
+
+        val reportStep = ReportHooksMapper.mapReportHooks(
+            startEvent = hooksStartEvent,
+            endEvent = hooksEndEvent,
+            destinationDirectory = destinationDirectory,
+            hooksLogger = hooksLogger,
+            children = children.toList()
+        )
+
+        eventsStack.push(reportStep)
     }
 
     final override fun onStepStart(event: StepStartEvent) {

@@ -16,7 +16,6 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.slf4j:slf4j-api")
-
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")
     implementation("com.fasterxml.jackson.core:jackson-databind")
@@ -28,7 +27,6 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.slf4j:slf4j-simple")
 }

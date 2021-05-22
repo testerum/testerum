@@ -177,10 +177,10 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
             return true;
         }
 
-        if(!runnerTreeNode.eventKey || !logEventKeyAsString) {
+        if(!runnerTreeNode.id || !logEventKeyAsString) {
             return false;
         }
-        return logEventKeyAsString.startsWith(runnerTreeNode.eventKey.eventKeyAsString)
+        return logEventKeyAsString.startsWith(runnerTreeNode.id)
     }
 
     private selectedNodeIsFinishedExecuting(): boolean {

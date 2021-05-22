@@ -16,6 +16,7 @@ import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {RunnerEventTypeEnum} from "../../../../model/test/event/enums/runner-event-type.enum";
 import {RunnerParametrizedTestTreeNodeModel} from "./model/runner-parametrized-test-tree-node.model";
 import {RunnerScenarioTreeNodeModel} from "./model/runner-scenario-tree-node.model";
+import {RunnerHookTreeNodeModel} from "./model/runner-hook-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -36,7 +37,8 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
         .addPair(RunnerParametrizedTestTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerScenarioTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerComposedStepTreeNodeModel, RunnerTreeNodeComponent)
-        .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent);
+        .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerHookTreeNodeModel, RunnerTreeNodeComponent);
 
     startTestExecutionSubscription: Subscription;
     runnerEventSubscription: Subscription;

@@ -70,7 +70,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
         val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
         val feature = webProjectManager.getProjectServices().getFeatureCache().getFeatureAtPath(path)
-                ?: featureFileService.createVirtualFeature(path)
+                ?: Feature.createVirtualFeature(path)
 
         val attachments = featureFileService.getAttachmentsAtPath(path, featuresDir)
 

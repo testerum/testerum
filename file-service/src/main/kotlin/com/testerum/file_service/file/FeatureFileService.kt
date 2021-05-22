@@ -82,18 +82,6 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
         }
     }
 
-    /**
-     * Creates a Feature instance for a directory that doesn't have an "info.feat" file.
-     */
-    fun createVirtualFeature(path: Path): Feature {
-        val escapedPath = path.withoutFile().escape()
-
-        return Feature(
-                name = escapedPath.directories.lastOrNull() ?: "",
-                path = escapedPath
-        )
-    }
-
     fun save(feature: Feature, featuresDir: JavaPath): Feature {
         val oldPath = feature.oldPath
         val newEscapedPath = feature.getNewPath().escape()

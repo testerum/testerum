@@ -7,8 +7,8 @@ import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.common_kotlin.toUrlArray
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.runner.events.model.ConfigurationEvent
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
@@ -179,7 +179,7 @@ class RunnerApplication(
         eventsService.logEvent(
             ConfigurationEvent(
                 time = LocalDateTime.now(),
-                eventKey = EventKey.LOG_EVENT_KEY,
+                eventKey = RunnerIdCreator.getRootId(),
                 projectId = projectInfo.id,
                 projectName = projectInfo.name,
                 verbose = cmdlineParams.verbose,

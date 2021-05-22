@@ -2,21 +2,22 @@ import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
 import {TestModel} from "../model/test/test.model";
-import {Path} from "../model/infrastructure/path/path.model";
-import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {ModelRepairerService} from "./model-repairer/model-repairer.service";
-
+import {Location} from "@angular/common";
 
 @Injectable()
 export class TestsService {
 
-    private TESTS_URL = "/rest/tests";
+    private readonly baseUrl: string;
 
     constructor(private http: HttpClient,
                 private urlService: UrlService,
-                private modelRepairer: ModelRepairerService) {}
+                private modelRepairer: ModelRepairerService,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/tests");
+    }
 
     delete(testModel:TestModel): Observable<void> {
         const httpOptions = {
@@ -25,7 +26,7 @@ export class TestsService {
         };
 
         return this.http
-            .delete<void>(this.TESTS_URL, httpOptions);
+            .delete<void>(this.baseUrl, httpOptions);
     }
 
     saveTest(testModel: TestModel): Observable<TestModel> {
@@ -37,7 +38,7 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/save", body, httpOptions).pipe(
+            .post<TestModel>(this.baseUrl + "/save", body, httpOptions).pipe(
             map(TestsService.extractTestModel),
             map(it => this.modelRepairer.repairTestModel(it)));
     }
@@ -50,7 +51,7 @@ export class TestsService {
         };
 
         return this.http
-            .get<TestModel>(this.TESTS_URL, httpOptions).pipe(
+            .get<TestModel>(this.baseUrl, httpOptions).pipe(
             map(TestsService.extractTestModel),
             map(it => this.modelRepairer.repairTestModel(it)));
     }
@@ -72,7 +73,7 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/warnings", body, httpOptions).pipe(
+            .post<TestModel>(this.baseUrl + "/warnings", body, httpOptions).pipe(
             map(TestsService.extractTestModel),
             map(it => this.modelRepairer.repairTestModel(it)));
     }

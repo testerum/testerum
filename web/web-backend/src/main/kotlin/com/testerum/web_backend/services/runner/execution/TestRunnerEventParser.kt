@@ -2,6 +2,7 @@ package com.testerum.web_backend.services.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -15,7 +16,6 @@ import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import javax.annotation.concurrent.NotThreadSafe
@@ -32,7 +32,7 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
         private const val TESTERUM_EVENT_POSTFIX = "<--testerum\u0000<--"
     }
 
-    private val eventKeysStack = mutableListOf<EventKey>()
+    private val eventKeysStack = mutableListOf<String>()
 
     fun processEvent(eventAsString: String) {
         try {
@@ -53,7 +53,7 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
             processTestRunnerEvent(
                     TextLogEvent(
                             time = LocalDateTime.now(),
-                            eventKey = eventKeysStack.lastOrNull() ?: EventKey.SUITE_EVENT_KEY,
+                            eventKey = eventKeysStack.lastOrNull() ?: RunnerIdCreator.getRootId(),
                             logLevel = LogLevel.INFO,
                             message = eventAsString,
                             exceptionDetail = null
@@ -78,7 +78,7 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
 
         val eventToProcess: RunnerEvent = if (event is TextLogEvent) {
             event.copy(
-                    eventKey = eventKeysStack.lastOrNull() ?: EventKey.SUITE_EVENT_KEY
+                    eventKey = eventKeysStack.lastOrNull() ?: RunnerIdCreator.getRootId()
             )
         } else {
             event

@@ -2,10 +2,10 @@ package com.testerum.runner_cmdline
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
 import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
@@ -47,7 +47,7 @@ object TesterumRunner {
                         bootstrapper.runnerModuleFactory.eventsService.logEvent(
                             TextLogEvent(
                                 time = LocalDateTime.now(),
-                                eventKey = EventKey.LOG_EVENT_KEY,
+                                eventKey = RunnerIdCreator.getRootId(),
                                 logLevel = LogLevel.INFO,
                                 message = line,
                                 exceptionDetail = null

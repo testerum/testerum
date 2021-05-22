@@ -1,37 +1,28 @@
-import {EMPTY, Observable, Subject, throwError as observableThrowError} from 'rxjs';
-
-import {tap} from 'rxjs/operators';
-import {EventEmitter, Injectable} from "@angular/core";
-import {ErrorCode} from "../model/exception/enums/error-code.enum";
-import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
-import {MyError} from "../model/exception/my-error.model";
-import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
-import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpEvent,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest
-} from "@angular/common/http";
-import {ServerNotAvailableModalService} from "../generic/error/server-not-available/server-not-available-modal.service";
+import {Observable, Subject} from 'rxjs';
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class UtilService {
 
-    private PING_REQUEST_PATH = "/rest/version";
+    private readonly pingRequestPath: string;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.pingRequestPath = location.prepareExternalUrl("/rest/version");
     }
 
     checkIfServerIsAvailable(): Observable<boolean> {
 
         let responseSubject: Subject<boolean> = new Subject<boolean>();
         this.http
-            .get<string>(this.PING_REQUEST_PATH)
+            .get<string>(this.pingRequestPath)
             .subscribe(
                 (data: string) => responseSubject.next(true), // success path
-                error => {responseSubject.next(false)} // error path
+                error => {
+                    responseSubject.next(false)
+                } // error path
             );
 
         return responseSubject;

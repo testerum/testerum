@@ -3,9 +3,9 @@ package com.testerum.runner_cmdline.runner_tree.builder.factory.impl
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.infrastructure.path.HasPath
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBasicHook
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.SuiteHookSource
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
@@ -42,36 +42,41 @@ object RunnerSuiteNodeFactory {
         runnerSuite: RunnerSuite,
         rootFeature: Feature,
         beforeAllTestsBasicHooks: List<RunnerBasicHook>
-    ): RunnerBeforeHooksList {
+    ): RunnerBeforeHooks {
+        val beforeAllHooks = RunnerBeforeHooks(runnerSuite, HookPhase.BEFORE_ALL_TESTS)
+
         val beforeHooks = mutableListOf<RunnerHook>()
 
         // hooks: basic before-all
         beforeHooks += beforeAllTestsBasicHooks
 
         // hooks: composed before-all
-        for (hookStepCall in rootFeature.hooks.beforeAll) {
+        for ((index, hookStepCall) in rootFeature.hooks.beforeAll.withIndex()) {
             beforeHooks += RunnerComposedHookNodeFactory.create(
-                parent = runnerSuite,
-                indexInParent = beforeHooks.size,
+                parent = beforeAllHooks,
+                indexInParent = index,
                 stepCall = hookStepCall,
                 phase = HookPhase.BEFORE_ALL_TESTS,
                 source = SuiteHookSource
             )
         }
 
-        return RunnerBeforeHooksList(beforeHooks)
+        beforeAllHooks.hooks = beforeHooks
+        return beforeAllHooks
     }
 
     private fun getAfterHooks(
         runnerSuite: RunnerSuite,
         rootFeature: Feature,
         afterAllTestsBasicHooks: List<RunnerBasicHook>
-    ): RunnerAfterHooksList {
+    ): RunnerAfterHooks {
+        val runnerAfterHooks = RunnerAfterHooks(runnerSuite, HookPhase.AFTER_ALL_TESTS)
+
         // hooks: composed after-all
         val afterHooks = mutableListOf<RunnerHook>()
         for (hookStepCall in rootFeature.hooks.afterAll) {
             afterHooks += RunnerComposedHookNodeFactory.create(
-                parent = runnerSuite,
+                parent = runnerAfterHooks,
                 indexInParent = afterHooks.size,
                 stepCall = hookStepCall,
                 phase = HookPhase.AFTER_ALL_TESTS,
@@ -82,6 +87,7 @@ object RunnerSuiteNodeFactory {
         // hooks: basic after-all
         afterHooks += afterAllTestsBasicHooks
 
-        return RunnerAfterHooksList(afterHooks)
+        runnerAfterHooks.hooks = afterHooks
+        return runnerAfterHooks
     }
 }

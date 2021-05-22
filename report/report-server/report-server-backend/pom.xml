@@ -34,6 +34,12 @@
             <artifactId>common-angular</artifactId>
         </dependency>
 
+        <!-- common-logging -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-logging</artifactId>
+        </dependency>
+
         <!-- report-server-frontend -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -84,7 +90,6 @@
             </exclusions>
         </dependency>
 
-
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
@@ -98,38 +103,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-
-        <!--######### LogBack ########-->
-        <!-- slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <!-- slf4j / commons logging bridge (to redirect common-logging logs to slf4j) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <!-- slf4j / log4j bridge (to redirect log4j logs to slf4j) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-        </dependency>
-        <!-- slf4j / logback implementation -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <!-- logback-core -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.logback-extensions</groupId>
-            <artifactId>logback-ext-spring</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -151,12 +124,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
 
-            <!-- Spring Boot: generate git info -->
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.testerum.report_server.ApplicationKt</mainClass>
+                </configuration>
             </plugin>
 
             <!-- Kotlin -->

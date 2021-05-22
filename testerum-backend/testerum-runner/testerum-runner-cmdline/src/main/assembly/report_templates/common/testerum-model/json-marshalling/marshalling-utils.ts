@@ -1,6 +1,8 @@
 export class MarshallingUtils {
 
-    static parseLocalDateTime(input: string): Date {
+    static parseUtcToLocalDateTime(input: string): Date {
+        input = input + "Z";
+
         return new Date(input);
     }
 

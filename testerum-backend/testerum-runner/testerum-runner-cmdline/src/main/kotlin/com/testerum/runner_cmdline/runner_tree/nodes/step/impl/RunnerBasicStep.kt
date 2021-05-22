@@ -1,11 +1,12 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
-import com.testerum.model.util.new_tree_builder.TreeNode
+import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.transformer.TransformerFactory
@@ -18,11 +19,10 @@ import java.lang.reflect.Method
 import java.lang.reflect.Parameter
 
 class RunnerBasicStep(
-    parent: TreeNode,
+    override val parent: RunnerTreeNode,
     stepCall: StepCall,
-    indexInParent: Int,
-    logEvents: Boolean,
-) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
+    indexInParent: Int
+) : RunnerStep(parent, stepCall, indexInParent) {
 
     companion object {
         private val PRIMITIVE_TYPES_BY_NAME: Map<String, Class<*>> = run {
@@ -40,6 +40,7 @@ class RunnerBasicStep(
             primitiveTypes.associateBy { it.name }
         }
     }
+    override val id: String = RunnerIdCreator.getStepId(parent.id, indexInParent, stepCall)
 
     private val stepDef: BasicStepDef = stepCall.stepDef as? BasicStepDef
         ?: throw IllegalArgumentException("this step call is not a basic step")

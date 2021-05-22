@@ -118,7 +118,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
             return "Variables declared in this environment will be inherited by all the other environments"
         }
         if (value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
-            return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
+            return "Variables declared in this environment are not saved inside the project and they will not be commited with your tests. <br/>" +
                 "<br/>" +
                 "In this way, you can have your own private variables for your Testerum instance."
         }

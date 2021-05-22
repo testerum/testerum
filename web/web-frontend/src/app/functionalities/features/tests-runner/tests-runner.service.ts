@@ -15,16 +15,12 @@ import {ContextService} from "../../../service/context.service";
 import {Project} from "../../../model/home/project.model";
 import {RunConfig} from "../../config/run-config/model/runner-config.model";
 import {PathWithScenarioIndexes} from "../../config/run-config/model/path-with-scenario-indexes.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class TestsRunnerService {
 
-    private static URLS = {
-        REST_CREATE_TEST_EXECUTION: "/rest/tests/executions",
-        REST_STOP_TEST_EXECUTION  : "/rest/tests/executions",
-        WEB_SOCKET_PATH           : "/rest/tests-ws",
-    };
-
+    private readonly urls: {[key: string]: string};
     private selectedNode: RunnerTreeNodeModel;
 
     private _isRunnerVisible:boolean = false;
@@ -44,7 +40,14 @@ export class TestsRunnerService {
     readonly treeFilterObservable: EventEmitter<RunnerTreeFilterModel> = new EventEmitter<RunnerTreeFilterModel>();
 
     constructor(private http: HttpClient,
-                private contextService: ContextService) {
+                private contextService: ContextService,
+                location: Location) {
+        this.urls = {
+            REST_CREATE_TEST_EXECUTION: location.prepareExternalUrl("/rest/tests/executions"),
+            REST_STOP_TEST_EXECUTION  : location.prepareExternalUrl("/rest/tests/executions"),
+            WEB_SOCKET_PATH           : location.prepareExternalUrl("/rest/tests-ws"),
+        };
+
         contextService.projectChangedEventEmitter.subscribe((project: Project) => {
             this.setRunnerVisibility(false);
         });
@@ -87,7 +90,7 @@ export class TestsRunnerService {
         });
         const options = { headers: headers };
 
-        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, bodyAsString, options)
+        this.http.post(this.urls.REST_CREATE_TEST_EXECUTION, bodyAsString, options)
             .pipe(map(json => new TestExecutionResponse().deserialize(json)))
             .subscribe((testExecutionResponse: TestExecutionResponse) => {
                 this.startExecution(testExecutionResponse);
@@ -147,7 +150,7 @@ export class TestsRunnerService {
             wsHost = "ws:";
         }
         wsHost += "//" + loc.host;
-        wsHost += TestsRunnerService.URLS.WEB_SOCKET_PATH;
+        wsHost += this.urls.WEB_SOCKET_PATH;
         return wsHost;
     }
 
@@ -181,7 +184,7 @@ export class TestsRunnerService {
             return;
         }
 
-        this.http.delete(`${TestsRunnerService.URLS.REST_STOP_TEST_EXECUTION}/${this.executionId}`)
+        this.http.delete(`${this.urls.REST_STOP_TEST_EXECUTION}/${this.executionId}`)
             .subscribe();
     }
 

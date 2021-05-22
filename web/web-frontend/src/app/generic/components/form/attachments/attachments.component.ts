@@ -6,6 +6,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 import {InfoModalService} from "../../info_modal/info-modal.service";
 import {ContextService} from "../../../../service/context.service";
 import {FileUpload} from "primeng/fileupload";
+import {Location} from "@angular/common";
 
 @Component({
     selector: 'attachments-component',
@@ -24,7 +25,8 @@ export class AttachmentsComponent implements OnInit {
     @ViewChild("fileUpload", { static: true }) fileUpload: FileUpload;
 
     constructor(private infoModalService: InfoModalService,
-                private contextService: ContextService){}
+                private contextService: ContextService,
+                private location: Location){}
 
     ngOnInit() {
     }
@@ -92,7 +94,8 @@ export class AttachmentsComponent implements OnInit {
         if (thumbnailVersion) {
             url += "&thumbnail=true"
         }
-        return url;
+
+        return this.location.prepareExternalUrl(url);
     }
 
     delete(attachment: Attachment) {

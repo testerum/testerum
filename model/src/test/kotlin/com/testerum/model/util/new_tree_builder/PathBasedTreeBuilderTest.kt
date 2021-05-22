@@ -15,13 +15,13 @@ class PathBasedTreeBuilderTest {
         val root: MyRootNode = builder.createTree(
             listOf(
                 MyFeature("Root feature", Path.createInstance("")),
-                MyTest("Root test", Path.createInstance("root-test.test")),
-                MyFeature("rest", Path.createInstance("owners/create/rest")),
-                MyFeature("owners", Path.createInstance("owners")),
-                MyFeature("create", Path.createInstance("owners/create")),
-                MyTest("Test", Path.createInstance("owners/create/ui/t.test")),
-                MyTest("Test zoo", Path.createInstance("owners/create/ui/t zoo.test")),
-                MyTest("Test add", Path.createInstance("owners/create/ui/t add.test")),
+                MyTest("Root test",       Path.createInstance("root-test.test")),
+                MyFeature("rest",         Path.createInstance("owners/create/rest")),
+                MyFeature("owners",       Path.createInstance("owners")),
+                MyFeature("create",       Path.createInstance("owners/create")),
+                MyTest("Test",            Path.createInstance("owners/create/ui/t.test")),
+                MyTest("Test zoo",        Path.createInstance("owners/create/ui/t zoo.test")),
+                MyTest("Test add",        Path.createInstance("owners/create/ui/t add.test")),
             )
         )
 

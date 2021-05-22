@@ -6,6 +6,7 @@ enum class HookPhase {
     BEFORE_EACH_TEST,
     AFTER_EACH_TEST,
     AFTER_ALL_TESTS,
+    AFTER_TEST
     ;
 
 }

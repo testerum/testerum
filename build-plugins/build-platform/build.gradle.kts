@@ -19,7 +19,7 @@ dependencies {
         }
 
         // testerum-api
-        api("com.testerum:testerum-steps-api:develop-SNAPSHOT")
+        api("com.testerum:testerum-steps-api:5.2.0")
 
         // kotlin
         val kotlinVersion: String by project
@@ -35,6 +35,7 @@ dependencies {
         api("org.slf4j:jcl-over-slf4j:$slf4jVersion")
         api("ch.qos.logback:logback-core:$logbackVersion")
         api("ch.qos.logback:logback-classic:$logbackVersion")
+        api("org.logback-extensions:logback-ext-spring:0.1.1")
 
         // nashorn
         api("org.javadelight:delight-nashorn-sandbox:0.1.19")
@@ -49,7 +50,6 @@ dependencies {
         api("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
         api("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
         api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
-        api("org.logback-extensions:logback-ext-spring:0.1.1")
 
         // xml
         api("org.jdom:jdom2:2.0.6")
@@ -67,11 +67,14 @@ dependencies {
         // http client
         api("org.apache.httpcomponents:httpclient:4.5.6")
 
+        // spring boot
+        api("org.springframework.boot:spring-boot-dependencies:2.3.3.RELEASE")
+
         // http server
         api("javax.servlet:javax.servlet-api:4.0.1")
 
         // wiremock
-        api("com.github.tomakehurst:wiremock-standalone:2.18.0")
+        api("com.github.tomakehurst:wiremock-standalone:2.27.2")
 
         // database
         api("org.flywaydb:flyway-core:4.1.2")
@@ -91,20 +94,23 @@ dependencies {
         // quartz
         api("org.quartz-scheduler:quartz:2.3.1")
 
+        // BouncyCastle
+        api("org.bouncycastle:bcpkix-jdk15on:1.60")
+
         // misc libraries
         api("org.apache.commons:commons-lang3:3.8.1")
         api("org.apache.commons:commons-text:1.6")
         api("commons-io:commons-io:2.6")
         api("com.google.guava:guava:22.0")
-        api("com.github.javafaker:javafaker:0.16")
+        api("com.github.javafaker:javafaker:1.0.2")
         api("com.github.mifmif:generex:1.0.2")
 
         // test libraries
         val junitJupiterVersion = "5.6.2"
         api("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
         api("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-        api("org.assertj:assertj-core:3.18.1")
         api("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+        api("org.assertj:assertj-core:3.18.1")
     }
 }
 

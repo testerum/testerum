@@ -1,6 +1,5 @@
 import {Path} from "../../infrastructure/path/path.model";
 import {RunnerEvent} from "./runner.event";
-import {EventKey} from "./fields/event-key.model";
 import {ExecutionStatusEnum} from "./enums/execution-status.enum";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
@@ -9,7 +8,7 @@ import {ObjectUtil} from "../../../utils/object.util";
 
 export class ScenarioEndEvent implements RunnerEvent, Serializable<ScenarioEndEvent> {
     time: Date;
-    eventKey: EventKey;
+    eventKey: string;
     eventType: RunnerEventTypeEnum = RunnerEventTypeEnum.SCENARIO_END_EVENT;
 
     testName: string;
@@ -20,7 +19,7 @@ export class ScenarioEndEvent implements RunnerEvent, Serializable<ScenarioEndEv
     durationMillis: number;
 
     deserialize(input: Object): ScenarioEndEvent {
-        this.eventKey = new EventKey().deserialize(input["eventKey"]);
+        this.eventKey = input["eventKey"];
         this.time = new Date(input["time"]);
         this.testName = input["testName"];
         this.testFilePath = Path.deserialize(input["testFilePath"]);

@@ -8,7 +8,6 @@ pluginManagement {
         kotlin("plugin.spring") version kotlinVersion
         id("org.siouan.frontend-jdk8") version "4.0.1"
         id("org.springframework.boot") version "2.3.3.RELEASE"
-        id("io.spring.dependency-management") version "1.0.10.RELEASE"
     }
 
     repositories {
@@ -22,6 +21,7 @@ includeWithDir("build-platform", "build-plugins")
 
 includeWithDir("common-jdk", "common")
 includeWithDir("common-kotlin", "common")
+includeWithDir("common-logging", "common")
 includeWithDir("common-nashorn", "common")
 includeWithDir("common-expression-evaluator", "common")
 includeWithDir("common-crypto", "common")
@@ -53,7 +53,8 @@ includeWithDir("report-server-frontend", "report/report-server")
 includeWithDir("report-server-backend", "report/report-server")
 includeWithDir("step-rdbms-util", "step-util")
 includeWithDir("step-transformer-utils", "step-util")
-//includeWithDir("testerum-extensions-maven-plugin", "tools")
+includeWithDir("testerum-extensions-maven-plugin", "tools")
+includeWithDir("testerum-extensions-gradle-plugin", "tools")
 includeWithDir("assertion-steps", "steps")
 includeWithDir("debug-steps", "steps")
 includeWithDir("json-steps", "steps")

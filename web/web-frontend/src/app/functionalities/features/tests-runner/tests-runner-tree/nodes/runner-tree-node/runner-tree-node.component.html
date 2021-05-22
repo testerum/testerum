@@ -30,6 +30,8 @@
 
         <i *ngIf="isScenarioNode()" class="fa_my-scenario" aria-hidden="true"></i>
 
+        <i *ngIf="isHooksContainerNode()" class="fa_my-hook" aria-hidden="true"></i>
+
         <span *ngIf="!isStepNode()"
               class="node-text"
               [class.disabled]="!isEnabled()"

@@ -4,17 +4,21 @@ import {Observable} from 'rxjs';
 import {Setting} from "../functionalities/config/settings/model/setting.model";
 import {JsonUtil} from "../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class SettingsService {
 
-    private BASE_URL = "/rest/settings";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/settings");
+    }
 
     getSettings(): Observable<Setting[]> {
         return this.http
-            .get<Setting[]>(this.BASE_URL)
+            .get<Setting[]>(this.baseUrl)
             .pipe(map(SettingsService.extractSettings));
     }
 
@@ -40,7 +44,7 @@ export class SettingsService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL, body, httpOptions).pipe(
+            .post<any>(this.baseUrl, body, httpOptions).pipe(
             map(SettingsService.extractSettings));
     }
 

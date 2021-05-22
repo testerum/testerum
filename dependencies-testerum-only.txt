@@ -1,0 +1,419 @@
+$ git log -1 master
+commit c2431c3a1d1e7a718616c143e39b6c402c33a56c (origin/master, master)
+Merge: 8415207a9 a6d1f973b
+Author: Ionut Pruteanu <ionut.pruteneau@ah.nl>
+Date:   Sat Mar 13 23:39:12 2021 +0100
+
+    Merge remote-tracking branch 'origin/master'
+
+
+[INFO] -----------< com.testerum:testerum-extensions-maven-plugin >------------
+[INFO] Building testerum-extensions-maven-plugin develop-SNAPSHOT       [43/67]
+[INFO] ----------------------------[ maven-plugin ]----------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-extensions-maven-plugin ---
+[INFO] com.testerum:testerum-extensions-maven-plugin:maven-plugin:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] ----------------------< com.testerum:json-steps >-----------------------
+[INFO] Building json-steps develop-SNAPSHOT                             [46/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ json-steps ---
+[INFO] com.testerum:json-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |     +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------------< com.testerum:rdbms-steps >----------------------
+[INFO] Building rdbms-steps develop-SNAPSHOT                            [47/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ rdbms-steps ---
+[INFO] com.testerum:rdbms-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------------< com.testerum:http-steps >-----------------------
+[INFO] Building http-steps develop-SNAPSHOT                             [48/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ http-steps ---
+[INFO] com.testerum:http-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] --------------------< com.testerum:selenium-steps >---------------------
+[INFO] Building selenium-steps develop-SNAPSHOT                         [49/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ selenium-steps ---
+[INFO] com.testerum:selenium-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------------< com.testerum:test-steps >-----------------------
+[INFO] Building test-steps develop-SNAPSHOT                             [50/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ test-steps ---
+[INFO] com.testerum:test-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------------< com.testerum:util-steps >-----------------------
+[INFO] Building util-steps develop-SNAPSHOT                             [51/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ util-steps ---
+[INFO] com.testerum:util-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------------< com.testerum:vars-steps >-----------------------
+[INFO] Building vars-steps develop-SNAPSHOT                             [52/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ vars-steps ---
+[INFO] com.testerum:vars-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ----------------< com.testerum:testerum-runner-cmdline >----------------
+[INFO] Building testerum-runner-cmdline develop-SNAPSHOT                [58/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-cmdline ---
+[INFO] com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] --------------------< com.testerum:testerum-junit >---------------------
+[INFO] Building testerum-junit develop-SNAPSHOT                         [59/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-junit ---
+[INFO] com.testerum:testerum-junit:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:test
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:test
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:test
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:test
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:test
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:test
+[INFO]
+[INFO] ------------------< com.testerum:testerum-junit-all >-------------------
+[INFO] Building testerum-junit-all develop-SNAPSHOT                     [60/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-junit-all ---
+[INFO] com.testerum:testerum-junit-all:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-junit:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] -------------< com.testerum:testerum-runner-cmdline-debug >-------------
+[INFO] Building testerum-runner-cmdline-debug develop-SNAPSHOT          [61/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-cmdline-debug ---
+[INFO] com.testerum:testerum-runner-cmdline-debug:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] ----------------< com.testerum:testerum-runner-spring >-----------------
+[INFO] Building testerum-runner-spring develop-SNAPSHOT                 [62/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-spring ---
+[INFO] com.testerum:testerum-runner-spring:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]
+[INFO] ---------------------< com.testerum:web-frontend >----------------------
+[INFO] Building web-frontend develop-SNAPSHOT                           [64/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-frontend ---
+[INFO] com.testerum:web-frontend:jar:develop-SNAPSHOT
+[INFO]
+[INFO] ---------------------< com.testerum:web-launcher >----------------------
+[INFO] Building web-launcher develop-SNAPSHOT                           [65/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-launcher ---
+[INFO] com.testerum:web-launcher:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] ----------------------< com.testerum:web-backend >----------------------
+[INFO] Building web-backend develop-SNAPSHOT                            [66/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-backend ---
+[INFO] com.testerum:web-backend:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:cloud-client:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-crypto:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:web-launcher:jar:develop-SNAPSHOT:runtime
+[INFO] +- com.testerum:common-fsnotifier:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-profiles:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-angular:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:test-steps:jar:develop-SNAPSHOT:compile
+[INFO]
+[INFO] -------------------< com.testerum:integration-tests >-------------------
+[INFO] Building integration-tests develop-SNAPSHOT                      [67/67]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ integration-tests ---
+[INFO] com.testerum:integration-tests:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.testerum:testerum-junit-all:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:testerum-junit:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:debug-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:http-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-json:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:model:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:json-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-di:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:settings:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:test
+[INFO] |  |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:file-service:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:util-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:vars-steps:jar:develop-SNAPSHOT:test

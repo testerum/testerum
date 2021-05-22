@@ -3,6 +3,7 @@ import {RunnerStepNode} from "./runner-step-node.model";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {Path} from "../../infrastructure/path/path.model";
 import {RunnerTreeDeserializationUtil} from "./util/runner-tree-deserialization.util";
+import {RunnerHooksNode} from "./runner-hooks-node.model";
 
 export class RunnerScenarioNode implements RunnerNode, Serializable<RunnerScenarioNode> {
     id: string;
@@ -10,6 +11,9 @@ export class RunnerScenarioNode implements RunnerNode, Serializable<RunnerScenar
     scenarioIndex: number;
     name: string;
     enabled: boolean;
+    beforeEachHooks: RunnerHooksNode;
+    afterEachHooks: RunnerHooksNode;
+    afterHooks: RunnerHooksNode;
 
     children: Array<RunnerStepNode> = [];
 
@@ -19,6 +23,9 @@ export class RunnerScenarioNode implements RunnerNode, Serializable<RunnerScenar
         this.scenarioIndex = input["scenarioIndex"];
         this.name = input["name"];
         this.enabled = input["enabled"];
+        this.beforeEachHooks = RunnerTreeDeserializationUtil.deserializeRunnerHooksNodes(input["beforeEachHooks"] || []);
+        this.afterEachHooks = RunnerTreeDeserializationUtil.deserializeRunnerHooksNodes(input["afterEachHooks"] || []);
+        this.afterHooks = RunnerTreeDeserializationUtil.deserializeRunnerHooksNodes(input["afterHooks"] || []);
 
         this.children = RunnerTreeDeserializationUtil.deserializeRunnerStepNodes(input["children"] || []);
 

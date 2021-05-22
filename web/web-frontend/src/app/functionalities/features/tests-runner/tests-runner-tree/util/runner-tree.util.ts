@@ -17,6 +17,9 @@ import {RunnerParametrizedTestNode} from "../../../../../model/runner/tree/runne
 import {RunnerScenarioNode} from "../../../../../model/runner/tree/runner-scenario-node.model";
 import {RunnerParametrizedTestTreeNodeModel} from "../model/runner-parametrized-test-tree-node.model";
 import {RunnerScenarioTreeNodeModel} from "../model/runner-scenario-tree-node.model";
+import {ArrayUtil} from "../../../../../utils/array.util";
+import {RunnerHooksNode} from "../../../../../model/runner/tree/runner-hooks-node.model";
+import {RunnerHookTreeNodeModel} from "../model/runner-hook-tree-node.model";
 
 export class RunnerTreeUtil {
 
@@ -35,19 +38,52 @@ export class RunnerTreeUtil {
 
     private static mapServerNodeChildrenToTreeModel(parentServerNode: RunnerNode, parentTreeNode: RunnerTreeNodeModel) {
 
-        let serverNodeChildren: RunnerNode[] = null;
+        let serverNodeChildren: RunnerNode[] = [];
+        if (parentServerNode instanceof RunnerRootNode ||
+            parentServerNode instanceof RunnerFeatureNode) {
+            if (parentServerNode.beforeAllHooks != null && parentServerNode.beforeAllHooks.children.length > 0) {
+                serverNodeChildren = serverNodeChildren.concat(parentServerNode.beforeAllHooks);
+            }
+        }
+
+        if (parentServerNode instanceof RunnerTestNode ||
+            parentServerNode instanceof RunnerScenarioNode) {
+            if (parentServerNode.beforeEachHooks != null && parentServerNode.beforeEachHooks.children.length > 0) {
+                serverNodeChildren = serverNodeChildren.concat(parentServerNode.beforeEachHooks);
+            }
+        }
+
         if (parentServerNode instanceof RunnerRootNode ||
             parentServerNode instanceof RunnerFeatureNode ||
             parentServerNode instanceof RunnerTestNode ||
             parentServerNode instanceof RunnerParametrizedTestNode ||
             parentServerNode instanceof RunnerScenarioNode ||
-            parentServerNode instanceof RunnerComposedStepNode) {
-            serverNodeChildren = parentServerNode.children;
+            parentServerNode instanceof RunnerComposedStepNode ||
+            parentServerNode instanceof RunnerHooksNode) {
+            serverNodeChildren = serverNodeChildren.concat(parentServerNode.children);
         }
 
-        if (serverNodeChildren == null) {
+        if (parentServerNode instanceof RunnerTestNode ||
+            parentServerNode instanceof RunnerScenarioNode) {
+            if (parentServerNode.afterHooks != null && parentServerNode.afterHooks.children.length > 0) {
+                serverNodeChildren = serverNodeChildren.concat(parentServerNode.afterHooks);
+            }
+            if (parentServerNode.afterEachHooks != null && parentServerNode.afterEachHooks.children.length > 0) {
+                serverNodeChildren = serverNodeChildren.concat(parentServerNode.afterEachHooks);
+            }
+        }
+
+        if (parentServerNode instanceof RunnerRootNode ||
+            parentServerNode instanceof RunnerFeatureNode) {
+            if (parentServerNode.afterAllHooks != null && parentServerNode.afterAllHooks.children.length > 0) {
+                serverNodeChildren = serverNodeChildren.concat(parentServerNode.afterAllHooks);
+            }
+        }
+
+        if (serverNodeChildren.length == 0) {
             return;
         }
+
         let parentTreeContainerNode: RunnerTreeContainerNodeModel = parentTreeNode as RunnerTreeContainerNodeModel;
         parentTreeContainerNode.getChildren().length = 0;
         for (const serverChildNode of serverNodeChildren) {
@@ -83,6 +119,14 @@ export class RunnerTreeUtil {
             parametrizedTestTreeNode.getNodeState().showChildren = true;
 
             treeNode = parametrizedTestTreeNode;
+        }
+
+        if (serverNode instanceof RunnerHooksNode) {
+            let hooksTreeNode = new RunnerHookTreeNodeModel(parentNode);
+            hooksTreeNode.text = serverNode.name;
+            hooksTreeNode.getNodeState().showChildren = false;
+
+            treeNode = hooksTreeNode;
         }
 
         if (serverNode instanceof RunnerScenarioNode) {
@@ -150,25 +194,8 @@ export class RunnerTreeUtil {
                 this.getAllNodesMapByEventKeyOfContainer(childNode, result);
             }
 
-            let eventKey = this.getNodeFullEventKey(childNode);
-            result.set(eventKey, childNode);
+            result.set(childNode.id, childNode);
         }
-    }
-
-    private static getNodeFullEventKey(node: RunnerTreeNodeModel) {
-        let eventKey = "";
-
-        let currentNode: RunnerTreeNodeModel = node;
-        while (!(currentNode instanceof JsonTreeModel)) {
-            eventKey = this.getNodeEventKey(currentNode) + "#" + eventKey;
-            currentNode = currentNode.getParent() as RunnerTreeContainerNodeModel;
-        }
-
-        return eventKey;
-    }
-
-    private static getNodeEventKey(node: RunnerTreeNodeModel): string {
-        return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0);
     }
 
     static getNumberOfSimpleTestsAndScenarios(treeRootNode: RunnerRootTreeNodeModel): number {

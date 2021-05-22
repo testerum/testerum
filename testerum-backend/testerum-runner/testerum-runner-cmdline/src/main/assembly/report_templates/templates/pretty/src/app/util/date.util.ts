@@ -38,7 +38,7 @@ export class DateUtil {
         }
 
         if (minutes) {
-            result = "" + minutes + ":" + result;
+            result = "" + minutes + "." + result;
             suffix = "minutes";
         }
         if (hours) {
@@ -47,6 +47,46 @@ export class DateUtil {
         }
 
         return result + " " + suffix;
+    }
+
+    static durationToLongString(durantionInMillis: number): string {
+        let date = new Date(durantionInMillis),
+            hours = Math.floor(durantionInMillis / (3600*1000)),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds(),
+            millis = ("" + date.getUTCMilliseconds()).slice(0, 2);
+
+        let result = "" + millis;
+        let suffix = "millis";
+
+        if (hours) {
+            result = hours + " hours ";
+
+            if(minutes) {
+                result += minutes + " minutes";
+            }
+            return result;
+        }
+
+        if (minutes) {
+            result = minutes + " minutes ";
+
+            if(seconds) {
+                result += seconds + " seconds";
+            }
+            return result;
+        }
+
+        if (seconds) {
+            result = seconds + " seconds ";
+
+            if(millis) {
+                result += millis + " millis"
+            }
+            return result;
+        }
+
+        return millis + " millis";
     }
 
 

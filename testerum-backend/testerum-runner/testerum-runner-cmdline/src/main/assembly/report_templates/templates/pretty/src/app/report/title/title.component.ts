@@ -22,7 +22,7 @@ export class TitleComponent implements OnInit {
 
         this.suiteName = this.titlePrefix + (reportSuite.executionName ? (" - " + reportSuite.executionName) : "");
         this.executionDate = DateUtil.dateTimeToShortString(reportSuite.startTime);
-        this.duration = DateUtil.durationToShortString(reportSuite.durationMillis);
+        this.duration = DateUtil.durationToLongString(reportSuite.durationMillis);
     }
 
 }

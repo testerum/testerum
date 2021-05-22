@@ -52,7 +52,7 @@ export class TestsRunnerLogsService {
         let log = new TestsRunnerLogModel();
         log.time = runnerEvent.time;
         log.eventType = runnerEvent.eventType;
-        log.eventKey = runnerEvent.eventKey.eventKeyAsString;
+        log.eventKey = runnerEvent.eventKey;
 
         if (runnerEvent instanceof RunnerErrorEvent) {
             log.addException("Exception: " + runnerEvent.errorMessage);

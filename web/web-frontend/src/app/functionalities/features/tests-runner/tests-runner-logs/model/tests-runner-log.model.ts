@@ -1,6 +1,5 @@
 import {TestsRunnerLogLineModel} from "./tests-runner-log-line.model";
 import {LogLineTypeEnum} from "./log-line-type.enum";
-import {EventKey} from "../../../../../model/test/event/fields/event-key.model";
 import {RunnerEventTypeEnum} from "../../../../../model/test/event/enums/runner-event-type.enum";
 import {LogLevel} from "../../../../../model/test/event/enums/log-level.enum";
 
