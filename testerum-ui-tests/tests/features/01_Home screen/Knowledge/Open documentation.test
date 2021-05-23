@@ -2,7 +2,7 @@ test-def: Open documentation
 
     step: Given I am on Home screen page
     step: When I continue with free license
-    step: When I click the element <<.test_videos-option>>
+    step: When I click the element <<.test_documentation-option>>
     step: When I wait <<2222>> milliseconds
-    step [disabled]: When I switch the context to the window with the title <<Testerum - FREE API>>
+    step: When I switch the context to the window with the title <<Testerum – FREE API, GUI, WEB automated tests without programming>>
     step: Then the url of the current page should be <<https://testerum.com/documentation/ui/why-testerum/>>
