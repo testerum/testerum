@@ -127,69 +127,69 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
         text: String?,
         escape: (String) -> String = { it }
     ): Any? {
+        return resolveInText(text, escape, seenParts = emptySet())
+    }
+
+    private fun resolveInText(
+        text: String?,
+        escape: (String) -> String,
+        seenParts: Set<String>
+    ): Any? {
+        if (text in seenParts) {
+            throw RuntimeException("cannot resolve expression [$text]: detected cycle between variables: $seenParts")
+        }
+
         if (text == null) {
             return null
         }
 
-        var result: String = text
+        val resolvedArgParts = mutableListOf<Any?>()
 
-        // this is a LinkedHashSet to keep the order of resolving,
-        // since this is more informative for the user
-        val seenParts = LinkedHashSet<String>()
+        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(text)
 
-        do {
-            var done = true
+        for (part: FileArgPart in parts) {
+            val resolvedArgPartPart: Any? = when (part) {
+                is FileTextArgPart -> part.text
+                is FileExpressionArgPart -> {
+                    if (part.text in seenParts) {
+                        throw RuntimeException("cannot resolve expression [$text]: detected cycle $seenParts")
+                    }
 
-            val resolvedArgParts = mutableListOf<Any?>()
+                    val expressionResult: Any? = ExpressionEvaluator.evaluate(part.text, varsContainer)
+                    val escapedExpressionResult: Any? = if (expressionResult is String) {
+                        escape(expressionResult)
+                    } else {
+                        expressionResult
+                    }
 
-            val parts: List<FileArgPart> = ARG_PART_PARSER.parse(result)
-
-            for (part: FileArgPart in parts) {
-                val resolvedArgPartPart: Any? = when (part) {
-                    is FileTextArgPart -> part.text
-                    is FileExpressionArgPart -> {
-                        if (part.text in seenParts) {
-                            throw RuntimeException("cannot resolve expression [$text]: detected cycle $seenParts")
-                        }
-                        seenParts += part.text
-                        done = false
-
-                        val expressionResult = ExpressionEvaluator.evaluate(part.text, varsContainer)
-                        if (expressionResult is String) {
-                            escape(expressionResult)
-                        } else {
-                            expressionResult
-                        }
+                    if (escapedExpressionResult is String) {
+                        resolveInText(escapedExpressionResult, escape, seenParts = seenParts + part.text)
+                    } else {
+                        escapedExpressionResult
                     }
                 }
-
-                resolvedArgParts += resolvedArgPartPart
             }
 
-            if (resolvedArgParts.size == 1 && resolvedArgParts[0] !is String?) {
-                // in this case it's possible to preserve the type
-                return resolvedArgParts[0]
-            }
+            resolvedArgParts += resolvedArgPartPart
+        }
 
-            result = when {
-                resolvedArgParts.isEmpty() -> ""
-                else -> {
-                    resolvedArgParts.joinToString(
-                        separator = "",
-                        transform = {
-                            if (it is CharSequence) {
-                                it
-                            } else {
-                                escape(it.toString())
-                            }
-
+        return when {
+            resolvedArgParts.isEmpty() -> ""
+            resolvedArgParts.size == 1 -> resolvedArgParts[0] // not joining to String to preserve the type
+            else -> {
+                resolvedArgParts.joinToString(
+                    separator = "",
+                    transform = {
+                        if (it is CharSequence) {
+                            it
+                        } else {
+                            escape(it.toString())
                         }
-                    )
-                }
-            }
-        } while (!done);
 
-        return result
+                    }
+                )
+            }
+        }
     }
 
     // todo: why do we need this, and can we replace it?
