@@ -6,7 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.streams.asSequence
+import kotlin.streams.toList
 import java.nio.file.Path as JavaPath
 
 object ReportDirs {
@@ -87,10 +87,11 @@ object ReportDirs {
         return DAY_DIR_RECOGNIZER.matches(fileName.toString())
     }
 
-    private fun JavaPath.listingSortedByLastModified(): Sequence<JavaPath> {
-        return Files.list(this)
-                .asSequence()
+    private fun JavaPath.listingSortedByLastModified(): List<JavaPath> {
+        return Files.list(this).use { pathStream ->
+            pathStream.toList()
                 .sortedBy { Files.getLastModifiedTime(it) }
+        }
     }
 
 }
