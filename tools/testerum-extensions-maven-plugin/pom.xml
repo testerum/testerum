@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.testerum</groupId>
         <artifactId>tools</artifactId>
-        <version>develop-SNAPSHOT</version>
+        <version>5.3.4</version>
     </parent>
 
     <artifactId>testerum-extensions-maven-plugin</artifactId>
