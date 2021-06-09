@@ -1344,7 +1344,6 @@
 
                     <configuration>
                         <tagNameFormat>v@{project.version}</tagNameFormat>
-                        <arguments>-Dproduction</arguments>
                         <goals>install</goals>
                     </configuration>
                 </plugin>
