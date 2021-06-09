@@ -6,7 +6,7 @@
     <parent>
         <artifactId>testerum</artifactId>
         <groupId>com.testerum</groupId>
-        <version>5.3.4</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>testerum-backend</artifactId>
