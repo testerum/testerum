@@ -56,7 +56,8 @@ export class MarshallingUtils {
         const type = input["@type"];
         const parser = parserMap[type];
         if (!parser) {
-            throw Error(`cannot find parser for type [${type}]`);
+            console.error(`cannot find parser for type [${type}]; this node will be ignored`, input);
+            return null;
         }
 
         return parser.parse(input);
@@ -71,9 +72,10 @@ export class MarshallingUtils {
         const result: Array<T> = [];
 
         for (let item of (input || [])) {
-            result.push(
-                this.parsePolymorphically(item, typeMap)
-            );
+            let parsedItem = this.parsePolymorphically(item, typeMap);
+            if (parsedItem !== null) {
+                result.push(parsedItem);
+            }
         }
 
         return result;
@@ -94,7 +96,10 @@ export class MarshallingUtils {
 
             let value = input[key];
 
-            result.set(key, this.parsePolymorphically(value, typeMap));
+            let parsedItem = this.parsePolymorphically(value, typeMap);
+            if (parsedItem !== null) {
+                result.set(key, parsedItem);
+            }
         }
         return result;
     }
