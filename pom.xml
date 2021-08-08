@@ -1403,6 +1403,9 @@
                             <outputDirectory>${maven.multiModuleProjectDirectory}/target/dependency</outputDirectory>
                             <includeGroupIds>com.testerum</includeGroupIds>
                             <addParentPoms>true</addParentPoms>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
                 </executions>
