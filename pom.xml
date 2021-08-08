@@ -1402,6 +1402,7 @@
                             <useRepositoryLayout>true</useRepositoryLayout>
                             <outputDirectory>${maven.multiModuleProjectDirectory}/target/dependency</outputDirectory>
                             <includeGroupIds>com.testerum</includeGroupIds>
+                            <addParentPoms>true</addParentPoms>
                         </configuration>
                     </execution>
                 </executions>
