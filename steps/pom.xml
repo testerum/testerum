@@ -23,6 +23,7 @@
         <module>test-steps</module>
         <module>util-steps</module>
         <module>vars-steps</module>
+        <module>basic-steps-package</module>
     </modules>
 
 </project>

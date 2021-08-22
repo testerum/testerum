@@ -1385,31 +1385,6 @@
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
 
-            <!-- copy dependencies to a specified location-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-
-                <executions>
-                    <execution>
-                        <id>create-repo</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <copyPom>true</copyPom>
-                            <useRepositoryLayout>true</useRepositoryLayout>
-                            <outputDirectory>${maven.multiModuleProjectDirectory}/target/dependency</outputDirectory>
-                            <includeGroupIds>com.testerum</includeGroupIds>
-                            <addParentPoms>true</addParentPoms>
-                            <overWriteReleases>true</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

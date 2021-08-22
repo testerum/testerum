@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>steps</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>basic-steps-package</artifactId>
+
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- http-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>http-steps</artifactId>
+        </dependency>
+
+        <!-- rdbms-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>rdbms-steps</artifactId>
+        </dependency>
+
+        <!-- selenium-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>selenium-steps</artifactId>
+        </dependency>
+
+        <!-- vars-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>vars-steps</artifactId>
+        </dependency>
+
+        <!-- util-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>util-steps</artifactId>
+        </dependency>
+
+        <!-- assertion-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>assertion-steps</artifactId>
+        </dependency>
+
+        <!-- debug-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>debug-steps</artifactId>
+        </dependency>
+
+        <!-- json-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>json-steps</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!-- maven-assembly-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
+                <executions>
+                    <!-- basic_steps -->
+                    <execution>
+                        <id>basic-steps-package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>${basedir}/assembly/assembly-descriptor-basic-steps.xml</descriptor>
+                            </descriptors>
+                            <attach>true</attach>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
