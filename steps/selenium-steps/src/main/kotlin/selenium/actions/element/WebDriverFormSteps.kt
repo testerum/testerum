@@ -115,7 +115,9 @@ class WebDriverFormSteps {
     //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I type <<text>> into the field <<elementLocator>>",
-            description = "Simulates typing keys from the keyboard into the given field."
+            description =
+            "Simulates typing keys from the keyboard into the given field.\n" +
+            "The previous value of the field is not cleared - the given text is appended to it."
     )
     fun typeTextIntoField(
             @Param(
