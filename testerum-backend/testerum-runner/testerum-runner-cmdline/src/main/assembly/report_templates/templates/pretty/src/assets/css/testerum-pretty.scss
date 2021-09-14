@@ -109,3 +109,8 @@ body {
 .fa_my-expand span {
     line-height: 0.5;
 }
+.fa_my-hook {
+    @extend .nf;
+    @extend .nf-mdi-hook;
+}
+

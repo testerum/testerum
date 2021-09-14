@@ -31,10 +31,12 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportFeature
+import com.testerum.runner.report_model.ReportHooks
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
-import java.util.*
+import com.testerum.runner.report_model.RunnerReportNode
+import java.util.ArrayDeque
 import java.nio.file.Path as JavaPath
 
 abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
@@ -265,7 +267,7 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         val testEndEvent = event
 
         var testStartEvent: TestStartEvent? = null
-        val children = ArrayDeque<ReportStep>()
+        val children = ArrayDeque<RunnerReportNode>()
 
         var done = false
         while (!done) {
@@ -280,6 +282,9 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                         done = true
                     }
                     is ReportStep -> {
+                        children.addFirst(eventFromStack)
+                    }
+                    is ReportHooks -> {
                         children.addFirst(eventFromStack)
                     }
                 }

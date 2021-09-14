@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = ReportTest::class             , name = "TEST"),
     JsonSubTypes.Type(value = ReportParametrizedTest::class , name = "PARAMETRIZED_TEST"),
     JsonSubTypes.Type(value = ReportScenario::class         , name = "SCENARIO"),
-    JsonSubTypes.Type(value = ReportStep::class             , name = "STEP")
+    JsonSubTypes.Type(value = ReportStep::class             , name = "STEP"),
+    JsonSubTypes.Type(value = ReportHooks::class            , name = "REPORT_HOOKS")
 ])
 interface RunnerReportNode {
 

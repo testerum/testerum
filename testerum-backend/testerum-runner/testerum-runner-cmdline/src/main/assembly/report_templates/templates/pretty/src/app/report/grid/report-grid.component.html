@@ -138,6 +138,7 @@
                         <i *ngIf="rowData.nodeType == ReportGridNodeType.TEST" class="fa_my-automated-test"></i>
                         <i *ngIf="rowData.nodeType == ReportGridNodeType.PARAMETRIZED_TEST" class="fa_my-automated-test"></i>
                         <i *ngIf="rowData.nodeType == ReportGridNodeType.SCENARIO" class="fa_my-scenario"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.HOOKS" class="fa_my-hook"></i>
 
                         <div [innerHTML]="rowData.textAsHtml"></div>
                     </div>

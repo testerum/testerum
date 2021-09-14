@@ -13,4 +13,4 @@ data class ReportTest(@JsonProperty("testName")         val testName: String,
                       @JsonProperty("status")           val status: ExecutionStatus,
                       @JsonProperty("textLogFilePath")  override val textLogFilePath: String,
                       @JsonProperty("modelLogFilePath") override val modelLogFilePath: String,
-                      @JsonProperty("children")         val children: List<ReportStep>) : FeatureOrTestRunnerReportNode
+                      @JsonProperty("children")         val children: List<RunnerReportNode>) : FeatureOrTestRunnerReportNode

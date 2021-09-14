@@ -1,10 +1,10 @@
 package com.testerum.report_generators.reports.report_model.base.mapper
 
+import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLogger
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
-import com.testerum.runner.report_model.ReportStep
 import com.testerum.runner.report_model.ReportTest
-import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLogger
+import com.testerum.runner.report_model.RunnerReportNode
 import java.nio.file.Path as JavaPath
 
 object ReportTestMapper {
@@ -13,7 +13,7 @@ object ReportTestMapper {
                       endEvent: TestEndEvent,
                       destinationDirectory: JavaPath,
                       testLogger: ReportToFileLogger,
-                      children: List<ReportStep>): ReportTest {
+                      children: List<RunnerReportNode>): ReportTest {
         return ReportTest(
                 testName = startEvent.testName,
                 testFilePath = startEvent.testFilePath.toString(),

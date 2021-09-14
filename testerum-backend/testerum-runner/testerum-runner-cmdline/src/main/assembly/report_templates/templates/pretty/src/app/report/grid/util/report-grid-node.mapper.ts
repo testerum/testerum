@@ -17,6 +17,8 @@ import {ArrayUtil} from "../../../util/array.util";
 import {ReportStepDef} from "../../../../../../../common/testerum-model/report-model/model/step/def/report-step-def";
 import {ReportParametrizedTest} from "../../../../../../../common/testerum-model/report-model/model/report/report-parametrized-test";
 import {ReportScenario} from "../../../../../../../common/testerum-model/report-model/model/report/report-scenario";
+import {ReportHooks} from "../../../../../../../common/testerum-model/report-model/model/report/report-hooks";
+import {HookPhase} from "../../../../../../../common/testerum-model/report-model/model/report/hook-phase";
 
 export class ReportGridNodeMapper {
 
@@ -57,6 +59,14 @@ export class ReportGridNodeMapper {
                 if (parametrizedTest) {
                     node.children.push(
                         parametrizedTest
+                    );
+                }
+            }
+            if (testOrFeature instanceof ReportHooks) {
+                let hooks = this.mapHooks(testOrFeature, filter, node);
+                if (hooks) {
+                    node.children.push(
+                        hooks
                     );
                 }
             }
@@ -108,6 +118,14 @@ export class ReportGridNodeMapper {
                     );
                 }
             }
+            if (testOrFeature instanceof ReportHooks) {
+                let hooks = this.mapHooks(testOrFeature, filter, node);
+                if (hooks) {
+                    node.children.push(
+                        hooks
+                    );
+                }
+            }
         }
 
         if (!filter.areTestFoldersShown) {
@@ -153,13 +171,24 @@ export class ReportGridNodeMapper {
         node.data.nodeType = ReportGridNodeType.TEST;
         node.data.tags = test.tags;
 
-        for (const step of test.children) {
-            let stepNode = this.mapSteps(step, filter, node);
-            stepNode.parent = node;
+        for (const testChild of test.children) {
+            if (testChild instanceof ReportStep) {
+                let stepNode = this.mapSteps(testChild, filter, node);
+                stepNode.parent = node;
 
-            node.children.push(
-                stepNode
-            );
+                node.children.push(
+                    stepNode
+                );
+            }
+
+            if (testChild instanceof ReportHooks) {
+                let hooks = this.mapHooks(testChild, filter, node);
+                if (hooks) {
+                    node.children.push(
+                        hooks
+                    );
+                }
+            }
         }
 
         if(filter.selectedTags.length != 0) {
@@ -232,19 +261,63 @@ export class ReportGridNodeMapper {
         node.data.nodeType = ReportGridNodeType.SCENARIO;
         node.data.tags = scenario.tags;
 
-        for (const step of scenario.children) {
-            let stepNode = this.mapSteps(step, filter, node);
-            stepNode.parent = node;
+        for (const scenarioChild of scenario.children) {
+            if (scenarioChild instanceof ReportStep) {
+                let stepNode = this.mapSteps(scenarioChild, filter, node);
+                stepNode.parent = node;
 
-            node.children.push(
-                stepNode
-            );
+                node.children.push(
+                    stepNode
+                );
+            }
+
+            if (scenarioChild instanceof ReportHooks) {
+                let hooks = this.mapHooks(scenarioChild, filter, node);
+                if (hooks) {
+                    node.children.push(
+                        hooks
+                    );
+                }
+            }
         }
 
         if(filter.selectedTags.length != 0) {
             if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
                 return null;
             }
+        }
+
+        return node;
+    }
+
+    private static mapHooks(hook: ReportHooks, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode {
+
+        let node = new ReportGridNode();
+        node.parent = parentNode;
+        node.leaf = !(hook.children && hook.children.length > 0);
+        node.expanded = false;
+
+        node.data = new ReportGridNodeData();
+        switch (+hook.hookPhase) {
+            case HookPhase.BEFORE_ALL_TESTS: node.data.textAsHtml = "Before all hooks"; break;
+            case HookPhase.BEFORE_EACH_TEST: node.data.textAsHtml = "Before each hooks"; break;
+            case HookPhase.AFTER_EACH_TEST: node.data.textAsHtml = "After each hooks"; break;
+            case HookPhase.AFTER_ALL_TESTS: node.data.textAsHtml = "After all hooks"; break;
+            case HookPhase.AFTER_TEST: node.data.textAsHtml = "After test hooks"; break;
+        }
+        node.data.status = hook.status;
+        node.data.durationMillis = hook.durationMillis;
+        node.data.textLogFilePath = hook.textLogFilePath;
+        node.data.modelLogFilePath = hook.modelLogFilePath;
+        node.data.nodeType = ReportGridNodeType.HOOKS;
+
+        for (const step of hook.children) {
+            let stepNode = this.mapSteps(step, filter, node);
+            stepNode.parent = node;
+
+            node.children.push(
+                stepNode
+            );
         }
 
         return node;

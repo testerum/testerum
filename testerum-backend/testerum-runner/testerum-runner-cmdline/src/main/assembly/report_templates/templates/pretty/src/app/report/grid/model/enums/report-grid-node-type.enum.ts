@@ -7,5 +7,6 @@ export enum ReportGridNodeType {
     SCENARIO,
     COMPOSED_STEP,
     BASIC_STEP,
-    UNDEFINED_STEP
+    UNDEFINED_STEP,
+    HOOKS
 }

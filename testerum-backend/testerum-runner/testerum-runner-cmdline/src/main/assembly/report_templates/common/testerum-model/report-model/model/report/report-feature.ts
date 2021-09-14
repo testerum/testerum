@@ -4,6 +4,7 @@ import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 import {RunnerReportNodeType} from "./runner-report-node";
 import {ReportTest} from "./report-test";
 import {ReportParametrizedTest} from "./report-parametrized-test";
+import {ReportHooks} from "./report-hooks";
 
 export class ReportFeature implements FeatureOrTestRunnerReportNode {
 
@@ -34,7 +35,8 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
         const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest,
-            [RunnerReportNodeType[RunnerReportNodeType.PARAMETRIZED_TEST]]: ReportParametrizedTest
+            [RunnerReportNodeType[RunnerReportNodeType.PARAMETRIZED_TEST]]: ReportParametrizedTest,
+            [RunnerReportNodeType[RunnerReportNodeType.REPORT_HOOKS]]: ReportHooks
         });
 
         return new ReportFeature(featureName, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);

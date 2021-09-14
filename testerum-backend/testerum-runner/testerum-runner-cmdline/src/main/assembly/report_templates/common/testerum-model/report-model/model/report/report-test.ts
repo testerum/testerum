@@ -2,6 +2,8 @@ import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-nod
 import {ExecutionStatus} from "./execution-status";
 import {ReportStep} from "./report-step";
 import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
+import {RunnerReportNode, RunnerReportNodeType} from "./runner-report-node";
+import {ReportHooks} from "./report-hooks";
 
 export class ReportTest implements FeatureOrTestRunnerReportNode {
 
@@ -14,7 +16,7 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
                 public readonly status: ExecutionStatus,
                 public readonly textLogFilePath: string,
                 public readonly modelLogFilePath: string,
-                public readonly children: Array<ReportStep>) {}
+                public readonly children: Array<RunnerReportNode>) {}
 
     static parse(input: Object): ReportTest {
         if (!input) {
@@ -30,7 +32,10 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const textLogFilePath = input["textLogFilePath"];
         const modelLogFilePath = input["modelLogFilePath"];
-        const children = MarshallingUtils.parseList(input["children"], ReportStep);
+        const children = MarshallingUtils.parseListPolymorphically<RunnerReportNode>(input["children"], {
+            [RunnerReportNodeType[RunnerReportNodeType.STEP]]: ReportStep,
+            [RunnerReportNodeType[RunnerReportNodeType.REPORT_HOOKS]]: ReportHooks
+        });
 
         return new ReportTest(testName, testFilePath, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
     }

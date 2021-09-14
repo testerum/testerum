@@ -9,5 +9,6 @@ export enum RunnerReportNodeType {
     TEST,
     PARAMETRIZED_TEST,
     SCENARIO,
-    STEP
+    STEP,
+    REPORT_HOOKS
 }
