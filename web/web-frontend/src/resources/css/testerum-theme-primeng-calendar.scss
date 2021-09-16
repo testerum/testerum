@@ -1,0 +1,40 @@
+p-calendar {
+    .p-calendar {
+        display: inline-flex;
+        line-height: 18px;
+
+        input {
+            display: none;
+        }
+
+        button {
+            height: 20px;
+            align-items: baseline;
+
+            .p-button-icon {
+                align-self: center;
+                margin-top: 1px;
+            }
+        }
+
+        .p-datepicker {
+            .p-datepicker-header {
+                button {
+                    align-items: center;
+                }
+                .p-datepicker-title {
+                    display: flex;
+                    flex-wrap: nowrap;
+                }
+            }
+        }
+
+        .p-timepicker {
+            button {
+                height: 1rem;
+                margin-top: 0;
+            }
+        }
+    }
+}
+

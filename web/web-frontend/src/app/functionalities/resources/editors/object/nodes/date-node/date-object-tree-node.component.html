@@ -15,8 +15,8 @@
               class="calendar">
             <input [ngModel]="inputDate"
                    (ngModelChange)="inputChange($event)"
-                   autocomplete="off"
-                   class="calendar-input"/>
+                   autocomplete="off"/>
+
             <p-calendar [ngModel]="date"
                         (onSelect)="onDateSelect($event)"
                         [showIcon]="true"
