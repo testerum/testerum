@@ -358,6 +358,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>android-steps</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>assertion-steps</artifactId>
                 <version>${project.version}</version>
             </dependency>

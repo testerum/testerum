@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>android-steps</module>
         <module>assertion-steps</module>
         <module>debug-steps</module>
         <module>json-steps</module>
