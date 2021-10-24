@@ -4,7 +4,8 @@ import com.testerum.step_rdbms_util.jdbc_transactions.SimpleTransactionTemplate
 import com.testerum.step_rdbms_util.scripts.model.RdbmsResultSet
 import java.sql.Connection
 import java.sql.ResultSet
-import java.util.TreeMap
+import java.sql.Types
+import java.util.*
 import javax.sql.DataSource
 
 class DbQueryExecutor(dataSource: DataSource) {
@@ -12,18 +13,16 @@ class DbQueryExecutor(dataSource: DataSource) {
     private val transactionTemplate: SimpleTransactionTemplate = SimpleTransactionTemplate(dataSource)
 
     fun executeStatement(sqlScriptAsString: String): RdbmsResultSet {
-        var rdbmsResultSet: RdbmsResultSet? = null
-        transactionTemplate.executeInTransaction { connection: Connection ->
+        return transactionTemplate.executeInTransaction { connection: Connection ->
             try {
                 val statement = connection.prepareStatement(sqlScriptAsString)
                 val resultSet = statement.executeQuery()
-                rdbmsResultSet = resultSetToOutput(resultSet)
+                resultSetToOutput(resultSet)
             } catch (e: Exception) {
                 val indentScriptLines = sqlScriptAsString.lines().joinToString("\n", "", "", -1, "...") { line: String -> "\t\t" + line }
                 throw RuntimeException("failed to execute SQL script\n$indentScriptLines", e)
             }
         }
-        return rdbmsResultSet ?: throw RuntimeException("this should not happen")
     }
 
     private fun resultSetToOutput(resultSet: ResultSet): RdbmsResultSet {
@@ -34,7 +33,8 @@ class DbQueryExecutor(dataSource: DataSource) {
             for (i in 0 until resultSet.metaData.columnCount)  {
                 val columnName = resultSet.metaData.getColumnLabel(i)
                 val value = resultSet.getValueAsJavaType(i)
-                row.put(columnName, value)
+
+                row[columnName] = value
             }
 
             result.add(row)
@@ -45,24 +45,35 @@ class DbQueryExecutor(dataSource: DataSource) {
 }
 
 private fun ResultSet.getValueAsJavaType(columnIndex: Int): Any? {
-    val columnType = this.metaData.getColumnTypeName(columnIndex)
-    return when (columnType) {
-        "java.sql.Types.CHAR"        -> getString(columnIndex)
-        "java.sql.Types.VARCHAR"     -> getString(columnIndex)
-        "java.sql.Types.LONGVARCHAR" -> getString(columnIndex)
-        "java.sql.Types.NUMERIC"     -> getBigDecimal(columnIndex)
-        "java.sql.Types.DECIMAL"     -> getBigDecimal(columnIndex)
-        "java.sql.Types.BIT"         -> getBoolean(columnIndex)
-        "java.sql.Types.TINYINT"     -> getLong(columnIndex)
-        "java.sql.Types.SMALLINT"    -> getLong(columnIndex)
-        "java.sql.Types.INTEGER"     -> getLong(columnIndex)
-        "java.sql.Types.BIGINT"      -> getLong(columnIndex)
-        "java.sql.Types.REAL"        -> getDouble(columnIndex)
-        "java.sql.Types.FLOAT"       -> getDouble(columnIndex)
-        "java.sql.Types.DOUBLE"      -> getDouble(columnIndex)
-        "java.sql.Types.DATE"        -> getDate(columnIndex)
-        "java.sql.Types.TIME"        -> getDate(columnIndex)
-        "java.sql.Types.TIMESTAMP"   -> getDate(columnIndex)
-        else -> getString(columnIndex)
+    // todo: check other types supported by JDBC
+    // todo: what types should we return, so that the user can use them easily
+    return when (metaData.getColumnType(columnIndex)) {
+        Types.CHAR        -> getString(columnIndex)
+        Types.VARCHAR     -> getString(columnIndex)
+        Types.LONGVARCHAR -> getString(columnIndex)
+        Types.NUMERIC     -> getBigDecimal(columnIndex)
+        Types.DECIMAL     -> getBigDecimal(columnIndex)
+        Types.BIT         -> getOrNull { getBoolean(columnIndex) }
+        Types.TINYINT     -> getOrNull { getLong(columnIndex) }
+        Types.SMALLINT    -> getOrNull { getLong(columnIndex) }
+        Types.INTEGER     -> getOrNull { getLong(columnIndex) }
+        Types.BIGINT      -> getOrNull { getLong(columnIndex) }
+        Types.REAL        -> getOrNull { getDouble(columnIndex) }
+        Types.FLOAT       -> getOrNull { getDouble(columnIndex) }
+        Types.DOUBLE      -> getOrNull { getDouble(columnIndex) }
+        Types.DATE        -> getDate(columnIndex)
+        Types.TIME        -> getDate(columnIndex)
+        Types.TIMESTAMP   -> getTimestamp(columnIndex)
+        else              -> getString(columnIndex)
+    }
+}
+
+private fun <R> ResultSet.getOrNull(getValue: () -> R): R? {
+    val result = getValue()
+
+    return if (wasNull()) {
+         null
+    } else {
+         result
     }
 }

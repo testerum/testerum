@@ -7,26 +7,22 @@ import javax.annotation.concurrent.NotThreadSafe
 @NotThreadSafe
 class ExceptionTrackingExecutor {
 
-    private val actionFailures = mutableListOf<ExecutionResult<*>>()
+    private val actionFailures = mutableListOf<FailureExecutionResult<*>>()
 
     fun <R> execute(action: () -> R): ExecutionResult<R> {
         return try {
             val result = action()
 
-            ExecutionResult.success(result)
+            SuccessfulExecutionResult(result)
         } catch (e: Exception) {
-            val failure = ExecutionResult.failure<R>(e)
+            val failure = FailureExecutionResult<R>(e)
             actionFailures.add(failure)
 
             failure
         }
     }
 
-    fun throwIfNeeded() {
-        if (actionFailures.size == 0) {
-            return
-        }
-
+    fun throwMultiException(): Nothing {
         val message = ""
         val cause = actionFailures[0].exception
         val enableSuppression = true
@@ -34,13 +30,13 @@ class ExceptionTrackingExecutor {
 
         val exceptionToThrow = ExceptionTrackingExecutorException(
             message,
-            cause!!,
+            cause,
             enableSuppression,
             writableStackTrace
         )
 
         if (actionFailures.size > 1) {
-            actionFailures.subList(1, actionFailures.size - 1).forEach { failure ->
+            actionFailures.subList(1, actionFailures.size - 1).forEach { failure  ->
                 exceptionToThrow.addSuppressed(failure.exception)
             }
         }

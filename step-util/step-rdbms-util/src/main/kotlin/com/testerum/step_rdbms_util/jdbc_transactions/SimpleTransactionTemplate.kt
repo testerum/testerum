@@ -1,20 +1,21 @@
 package com.testerum.step_rdbms_util.jdbc_transactions
 
 import com.testerum.step_rdbms_util.jdbc_transactions.exec.ExceptionTrackingExecutor
+import com.testerum.step_rdbms_util.jdbc_transactions.exec.SuccessfulExecutionResult
 import java.sql.Connection
 import javax.sql.DataSource
 
 class SimpleTransactionTemplate(private val dataSource: DataSource) {
 
-    fun executeInTransaction(action: (Connection) -> Unit) {
+    fun <R> executeInTransaction(action: (Connection) -> R): R {
         try {
-            tryToExecuteInTransaction(action)
+            return tryToExecuteInTransaction(action)
         } catch (e: Exception) {
             throw RuntimeException("failed to execute in transaction", e)
         }
     }
 
-    private fun tryToExecuteInTransaction(action: (Connection) -> Unit) {
+    private fun <R> tryToExecuteInTransaction(action: (Connection) -> R): R {
         val connection = acquireDatabaseConnection()
         val executor = ExceptionTrackingExecutor()
 
@@ -24,13 +25,16 @@ class SimpleTransactionTemplate(private val dataSource: DataSource) {
         val close = { connection.close() }
 
         val dbActionResult = executor.execute(databaseAction)
-        if (dbActionResult.succeeded()) {
+        
+        if (dbActionResult is SuccessfulExecutionResult) {
             executor.execute(commit)
+            executor.execute(close)
+            return dbActionResult.result
         } else {
             executor.execute(rollback)
+            executor.execute(close)
+            executor.throwMultiException()
         }
-        executor.execute(close)
-        executor.throwIfNeeded()
     }
 
     private fun acquireDatabaseConnection(): Connection {
