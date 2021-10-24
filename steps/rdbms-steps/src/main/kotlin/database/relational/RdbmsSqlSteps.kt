@@ -3,6 +3,7 @@ package database.relational
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.annotations.steps.When
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.model.RdbmsSql
 import database.relational.transformer.RdbmsConnectionTransformer
@@ -12,19 +13,20 @@ import database.relational.util.prettyPrint
 class RdbmsSqlSteps {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
+    private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
     @When(
-            value = "I execute the SQL <<sql>> on the database <<dbConnection>>",
+            value = "I execute the SQL <<sqlScript>> on the database <<dbConnection>>",
             description = "Executes the given SQL using the given relational database connection."
     )
     fun executeSql(
-            @Param(
+        @Param(
                     transformer = RdbmsSqlTransformer::class,
                     description = "The SQL to be executed."
             )
-            sql: RdbmsSql,
+            sqlScript: RdbmsSql,
 
-            @Param(
+        @Param(
                     transformer = RdbmsConnectionTransformer::class,
                     description = RdbmsSharedDescriptions.CONNECTION
             )
@@ -36,10 +38,44 @@ class RdbmsSqlSteps {
                 "${dbConnection.rdbmsConnectionConfig.prettyPrint()}\n" +
                 "SQL to execute\n" +
                 "--------------\n" +
-                "${sql.sql}\n"
+                "${sqlScript.sql}\n"
         )
 
-        dbConnection.executeSqlScript(sql.sql)
+        dbConnection.executeSqlScript(sqlScript.sql)
     }
 
+    @When(
+            value = "I execute the SQL query <<sqlQuery>> on the database <<dbConnection>> and save the result into the variable <<varName>>",
+            description = "Executes the given SQL using the given relational database connection."
+    )
+    fun executeSqlAndSaveTheResultSet(
+        @Param(
+                    transformer = RdbmsSqlTransformer::class,
+                    description = "The SQL to be executed."
+            )
+            sqlQuery: RdbmsSql,
+
+        @Param(
+                    transformer = RdbmsConnectionTransformer::class,
+                    description = RdbmsSharedDescriptions.CONNECTION
+            )
+            dbConnection: RdbmsConnection,
+
+        @Param(
+                    description = ""
+            )
+            resultName: String
+    ) {
+        logger.info(
+                "Connection config\n" +
+                "-----------------\n" +
+                "${dbConnection.rdbmsConnectionConfig.prettyPrint()}\n" +
+                "SQL to execute\n" +
+                "--------------\n" +
+                "${sqlQuery.sql}\n"
+        )
+
+        val rdbmsResultSet = dbConnection.executeSqlStatement(sqlQuery.sql)
+        variables[resultName] = rdbmsResultSet
+    }
 }
