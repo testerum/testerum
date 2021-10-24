@@ -62,7 +62,7 @@ private fun ResultSet.getValueAsJavaType(columnIndex: Int): Any? {
         Types.FLOAT       -> getOrNull { getDouble(columnIndex) }
         Types.DOUBLE      -> getOrNull { getDouble(columnIndex) }
         Types.DATE        -> getDate(columnIndex)
-        Types.TIME        -> getDate(columnIndex)
+        Types.TIME        -> getTime(columnIndex)
         Types.TIMESTAMP   -> getTimestamp(columnIndex)
         else              -> getString(columnIndex)
     }
