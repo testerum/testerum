@@ -1,5 +1,6 @@
 package database.relational
 
+import com.testerum.model.expressions.json.util.JSON_STEPS_OBJECT_MAPPER
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.annotations.steps.When
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
@@ -11,6 +12,9 @@ import database.relational.transformer.RdbmsSqlTransformer
 import database.relational.util.prettyPrint
 
 class RdbmsSqlSteps {
+    companion object {
+        private val PRETTY_PRINTING_JSON_WRITER = JSON_STEPS_OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+    }
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
@@ -77,5 +81,12 @@ class RdbmsSqlSteps {
 
         val rdbmsResultSet = dbConnection.executeSqlStatement(sqlQuery.sql)
         variables[resultName] = rdbmsResultSet
+
+        val rdbmsResultSetAsString = PRETTY_PRINTING_JSON_WRITER.writeValueAsString(rdbmsResultSet)
+        logger.info(
+            "Creating variable $resultName:\n" +
+                "$rdbmsResultSetAsString\n"
+        )
+
     }
 }

@@ -5,7 +5,7 @@ import com.testerum.step_rdbms_util.scripts.model.RdbmsResultSet
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.Types
-import java.util.*
+import java.util.TreeMap
 import javax.sql.DataSource
 
 class DbQueryExecutor(dataSource: DataSource) {
@@ -61,9 +61,9 @@ private fun ResultSet.getValueAsJavaType(columnIndex: Int): Any? {
         Types.REAL        -> getOrNull { getDouble(columnIndex) }
         Types.FLOAT       -> getOrNull { getDouble(columnIndex) }
         Types.DOUBLE      -> getOrNull { getDouble(columnIndex) }
-        Types.DATE        -> getDate(columnIndex)
-        Types.TIME        -> getTime(columnIndex)
-        Types.TIMESTAMP   -> getTimestamp(columnIndex)
+        Types.DATE        -> getDate(columnIndex).toLocalDate()
+        Types.TIME        -> getTime(columnIndex).time
+        Types.TIMESTAMP   -> getTimestamp(columnIndex).toLocalDateTime()
         else              -> getString(columnIndex)
     }
 }
