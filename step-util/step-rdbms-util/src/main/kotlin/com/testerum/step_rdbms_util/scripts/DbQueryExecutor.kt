@@ -30,7 +30,7 @@ class DbQueryExecutor(dataSource: DataSource) {
 
         while (resultSet.next()) {
             val row = TreeMap<String, Any?>()
-            for (i in 0 until resultSet.metaData.columnCount)  {
+            for (i in 1..resultSet.metaData.columnCount) {
                 val columnName = resultSet.metaData.getColumnLabel(i)
                 val value = resultSet.getValueAsJavaType(i)
 
@@ -72,8 +72,8 @@ private fun <R> ResultSet.getOrNull(getValue: () -> R): R? {
     val result = getValue()
 
     return if (wasNull()) {
-         null
+        null
     } else {
-         result
+        result
     }
 }

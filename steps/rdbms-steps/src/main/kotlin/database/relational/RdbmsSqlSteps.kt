@@ -50,7 +50,8 @@ class RdbmsSqlSteps {
 
     @When(
             value = "I execute the SQL query <<sqlQuery>> on the database <<dbConnection>> and save the result into the variable <<varName>>",
-            description = "Executes the given SQL using the given relational database connection."
+            description = "Executes the given SQL query, and saves the result into the variable with the given name. " +
+                "The variable will be an array, each item representing a row returned by the SQL query."
     )
     fun executeSqlAndSaveTheResultSet(
         @Param(
@@ -80,11 +81,11 @@ class RdbmsSqlSteps {
         )
 
         val rdbmsResultSet = dbConnection.executeSqlStatement(sqlQuery.sql)
-        variables[resultName] = rdbmsResultSet
+        variables[resultName] = rdbmsResultSet.result
 
-        val rdbmsResultSetAsString = PRETTY_PRINTING_JSON_WRITER.writeValueAsString(rdbmsResultSet)
+        val rdbmsResultSetAsString = PRETTY_PRINTING_JSON_WRITER.writeValueAsString(variables[resultName])
         logger.info(
-            "Creating variable $resultName:\n" +
+            "Creating variable \"$resultName\":\n" +
                 "$rdbmsResultSetAsString\n"
         )
 
