@@ -28,10 +28,10 @@
             <artifactId>common-json-diff-util</artifactId>
         </dependency>
 
-        <!-- assertion-functions -->
+        <!-- common-json-assertion-functions -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>assertion-functions</artifactId>
+            <artifactId>common-json-assertion-functions</artifactId>
         </dependency>
 
 

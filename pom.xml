@@ -119,7 +119,8 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.platform.version>1.6.2</junit.platform.version>
         <jetty.version>9.4.27.v20200227</jetty.version>
-        <selenium.version>3.13.0</selenium.version>
+        <selenium.version>3.141.59</selenium.version>
+        <appium.version>7.6.0</appium.version>
         <maven-api.version>3.0.5</maven-api.version>
     </properties>
 
@@ -136,7 +137,7 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>assertion-functions</artifactId>
+                <artifactId>common-json-assertion-functions</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -268,6 +269,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-fast-serialization</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-text-matchers</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -704,6 +711,19 @@
                 </exclusions>
             </dependency>
 
+            <!-- Appium -->
+            <dependency>
+                <groupId>io.appium</groupId>
+                <artifactId>java-client</artifactId>
+                <version>${appium.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- jetty-server -->
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
@@ -1121,6 +1141,12 @@
 
                                             <!-- jetty conflicts -->
                                             <ignoreClass>javax.websocket.*</ignoreClass>
+
+                                            <!-- Appium with Selenium conflicts, this happens because appium has selenium classes copyed inside their .jar file -->
+                                            <ignoreClass>org.openqa.selenium.*</ignoreClass>
+
+                                            <!-- JParsec with cglib - for some reasons JParsec copyes inside their .jar file the Cglib library -->
+                                            <ignoreClass>net.sf.cglib.*</ignoreClass>
                                         </ignoreClasses>
                                     </banDuplicateClasses>
 

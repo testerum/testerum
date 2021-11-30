@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>assertion-functions</module>
         <module>common-angular</module>
         <module>common-cmdline</module>
         <module>common-crypto</module>
@@ -24,6 +23,7 @@
         <module>common-logging</module>
         <module>common-rdbms</module>
         <module>common-di</module>
+        <module>common-json-assertion-functions</module>
         <module>common-json-diff</module>
         <module>common-json-diff-util</module>
         <module>common-kotlin</module>
@@ -34,6 +34,7 @@
         <module>common-fast-serialization</module>
         <module>common-stats</module>
         <module>common-encrypted-prefs</module>
+        <module>common-text-matchers</module>
     </modules>
 
 </project>

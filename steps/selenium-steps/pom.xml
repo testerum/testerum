@@ -31,6 +31,12 @@
             <artifactId>common-expression-evaluator</artifactId>
         </dependency>
 
+        <!-- common-text-matchers -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-text-matchers</artifactId>
+        </dependency>
+
         <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>

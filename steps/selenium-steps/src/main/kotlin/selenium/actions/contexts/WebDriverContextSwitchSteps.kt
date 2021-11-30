@@ -5,7 +5,7 @@ import com.testerum_api.testerum_steps_api.annotations.steps.When
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.frame_switchers.FrameSwitcher
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
-import selenium_steps_support.service.text_match.TextMatcherService
+import com.testerum.common_text_matchers.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverContextSwitchSteps {
