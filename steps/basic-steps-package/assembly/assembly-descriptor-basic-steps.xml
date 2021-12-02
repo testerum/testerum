@@ -18,6 +18,7 @@
                 <include>com.testerum:http-steps</include>
                 <include>com.testerum:rdbms-steps</include>
                 <include>com.testerum:selenium-steps</include>
+                <include>com.testerum:android-steps</include>
                 <include>com.testerum:util-steps</include>
                 <include>com.testerum:vars-steps</include>
                 <include>com.testerum:assertion-steps</include>

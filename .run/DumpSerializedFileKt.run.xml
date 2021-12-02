@@ -1,13 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DumpSerializedFileKt" type="JetRunConfigurationType" singleton="false" nameIsGenerated="true">
-    <module name="common-fast-serialization" />
-    <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/steps/selenium-steps/target/classes/META-INF/testerum/extensions-info.tfsf" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" />
-    <option name="PASS_PARENT_ENVS" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.testerum.common_fast_serialization.debug.DumpSerializedFileKt" />
-    <option name="WORKING_DIRECTORY" value="" />
+    <module name="common-fast-serialization" />
+    <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/steps/android-steps/target/classes/META-INF/testerum/extensions-info.tfsf" />
+    <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

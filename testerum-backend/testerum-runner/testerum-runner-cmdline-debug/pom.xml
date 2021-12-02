@@ -62,6 +62,10 @@
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>android-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>util-steps</artifactId>
         </dependency>
         <dependency>

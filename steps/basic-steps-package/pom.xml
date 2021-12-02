@@ -32,6 +32,12 @@
             <artifactId>selenium-steps</artifactId>
         </dependency>
 
+        <!-- android-steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>android-steps</artifactId>
+        </dependency>
+
         <!-- vars-steps -->
         <dependency>
             <groupId>com.testerum</groupId>

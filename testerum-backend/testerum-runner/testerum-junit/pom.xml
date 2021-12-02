@@ -82,6 +82,11 @@
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>android-steps</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>util-steps</artifactId>
             <scope>test</scope>
         </dependency>

@@ -1,7 +1,7 @@
 package com.testerum.scanner.step_lib_scanner.impl
 
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.model.feature.hooks.HookPhase
+import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests
 import com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest
 import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
@@ -9,7 +9,6 @@ import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
 import com.testerum_api.testerum_steps_api.annotations.util.annotationNullToRealNull
 import io.github.classgraph.ClassInfo
 import io.github.classgraph.MethodInfo
-import java.lang.reflect.Method
 
 val HOOKS_METHOD_ANNOTATIONS = setOf<String>(
         BeforeAllTests::class.java.name,
@@ -36,28 +35,37 @@ private fun MethodInfo.toHookDefs(): List<HookDef> {
 
     return hookAnnotationInfos.map { annotationInfo ->
         createHookFromMethod(
-                phaseAnnotation = HookAnnotation(
-                        annotation = annotationInfo.loadClassAndInstantiate()
-                ),
-                method = this.loadClassAndGetMethod()
+            phaseAnnotation = HookAnnotation(
+                annotation = annotationInfo.loadClassAndInstantiate()
+            ),
+            methodDeclaringClass = this.classInfo.name,
+            methodName = this.name
         )
     }
 }
 
-private fun createHookFromMethod(phaseAnnotation: HookAnnotation, method: Method): HookDef {
+private fun createHookFromMethod(
+    phaseAnnotation: HookAnnotation,
+    methodDeclaringClass: String,
+    methodName: String,
+): HookDef {
     try {
-        return tryToCreateHookFromMethod(phaseAnnotation, method)
+        return tryToCreateHookFromMethod(phaseAnnotation, methodDeclaringClass, methodName)
     } catch (e: Exception) {
-        throw RuntimeException("failed to create step from method [$method]", e)
+        throw RuntimeException("failed to create step from method [$methodDeclaringClass.$methodName]", e)
     }
 
 }
 
-private fun tryToCreateHookFromMethod(phaseAnnotation: HookAnnotation, method: Method): HookDef {
+private fun tryToCreateHookFromMethod(
+    phaseAnnotation: HookAnnotation,
+    methodDeclaringClass: String,
+    methodName: String,
+): HookDef {
     return HookDef(
             phase = phaseAnnotation.phase,
-            className = method.declaringClass.name,
-            methodName = method.name,
+            className = methodDeclaringClass,
+            methodName = methodName,
             order = phaseAnnotation.order,
             description = phaseAnnotation.description
     )
