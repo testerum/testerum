@@ -31,10 +31,12 @@ class DefaultGlueObjectFactory : GlueObjectFactory {
         }
 
         val constructor: Constructor<out T> = try {
-            type.getConstructor()
+            type.getDeclaredConstructor()
         } catch (e: NoSuchMethodException) {
             throw RuntimeException("class [${type.name}] doesn't have a no-args constructor. If you need dependency-injection add a GlueObjectFactory implementation to the classpath (e.g. testerum-runner-spring).", e)
         }
+
+        constructor.isAccessible = true
 
         try {
             return constructor.newInstance()
