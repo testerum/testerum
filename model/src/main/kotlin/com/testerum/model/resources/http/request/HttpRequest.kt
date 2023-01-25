@@ -16,9 +16,9 @@ data class HttpRequest @JsonCreator constructor(
 ) {
 
     fun getFirstHeaderValue(headerName: String): String? {
-        val lowerCaseHeaderName = headerName.toLowerCase()
+        val lowerCaseHeaderName = headerName.lowercase()
 
-        return headers.entries.find {it.key.toLowerCase() == lowerCaseHeaderName}
+        return headers.entries.find {it.key.lowercase() == lowerCaseHeaderName}
                 ?.value
     }
 

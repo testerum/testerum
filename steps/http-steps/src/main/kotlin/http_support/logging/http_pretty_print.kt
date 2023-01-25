@@ -340,7 +340,7 @@ fun Int.prettyPrintHttpStatusCode(): String {
 
 private fun formatHttpBody(body: String,
                            contentType: String,
-                           bodyDescription: String): String {  // todo: bodyDescription is unused; check how we need to use it (check where it's used, and how the logs look with it)
+                           @Suppress("UNUSED_PARAMETER") bodyDescription: String): String {  // todo: bodyDescription is unused; check how we need to use it (check where it's used, and how the logs look with it)
     // remove things not related to media type; examples:
     // Content-Type: text/html; charset=utf-8
     // Content-Type: multipart/form-data; boundary=something

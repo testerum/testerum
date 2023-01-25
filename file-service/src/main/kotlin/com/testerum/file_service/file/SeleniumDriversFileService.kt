@@ -49,7 +49,7 @@ class SeleniumDriversFileService {
         val browserPaths = seleniumDriversDir.list()
 
         for (browserPath in browserPaths) {
-            val browserTypeCode = browserPath.fileName?.toString()?.toUpperCase() ?: ""
+            val browserTypeCode = browserPath.fileName?.toString()?.uppercase() ?: ""
             val browserType = SeleniumBrowserType.safeValueOf(browserTypeCode)
 
             if (browserType == null) {

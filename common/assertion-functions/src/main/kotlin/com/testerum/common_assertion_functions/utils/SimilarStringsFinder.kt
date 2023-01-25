@@ -1,6 +1,7 @@
 package com.testerum.common_assertion_functions.utils
 
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.text.similarity.LevenshteinDistance
 import java.util.*
 
 private val MAX_DIFFERENCE_PERCENTAGE = 50
@@ -48,13 +49,13 @@ fun Iterable<String>.findSimilarStrings(desiredString: String): List<String> {
 private fun calculateStringDistance(source: String,
                                     target: String,
                                     minimumSimilarityPercentage: Int): Int {
-    val maximumAllowedDistance = calculateMaximumAllowedDistance(source, target, minimumSimilarityPercentage)
+    val maximumAllowedDistance: Int = calculateMaximumAllowedDistance(source, target, minimumSimilarityPercentage)
 
-    return StringUtils.getLevenshteinDistance(
-            target.toLowerCase(),
-            source.toLowerCase(),
-            maximumAllowedDistance
-    )
+    return LevenshteinDistance(maximumAllowedDistance)
+        .apply(
+            target.lowercase(),
+            source.lowercase(),
+        )
 }
 
 private fun calculateMaximumAllowedDistance(source: String,

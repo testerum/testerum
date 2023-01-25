@@ -65,7 +65,7 @@ class ManualTestsTreeBuilder(testPlanName: String) {
                             path = Path(directories = path),
                             name = label,
                             status = status,
-                            children = children.sortedBy { it.path.withoutFileExtension().toString().toLowerCase() }
+                            children = children.sortedBy { it.path.withoutFileExtension().toString().lowercase() }
                     )
                 }
                 is ManualTest -> ManualTestsStatusTreeNode(
