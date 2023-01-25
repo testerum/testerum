@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") apply false
+    java
 }
 
 val production: String? by rootProject
@@ -13,17 +14,17 @@ allprojects {
     version = "develop-SNAPSHOT"
 
     repositories {
-        jcenter()
+        mavenCentral()
         mavenLocal()
     }
 
-    extensions.configure<JavaPluginExtension>("java") {
-        @Suppress("UnstableApiUsage")
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(8))
-            vendor.set(JvmVendorSpec.ADOPTOPENJDK)
-        }
-    }
+//    extensions.configure<JavaPluginExtension>("java") {
+//        @Suppress("UnstableApiUsage")
+//        toolchain {
+//            languageVersion.set(JavaLanguageVersion.of(8))
+//            vendor.set(JvmVendorSpec.ADOPTOPENJDK)
+//        }
+//    }
 
     tasks.withType<KotlinCompile>().configureEach {
         // kotlinOptions.allWarningsAsErrors = true

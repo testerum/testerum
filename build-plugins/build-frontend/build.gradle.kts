@@ -3,16 +3,12 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
     gradlePluginPortal()
 }
 
 dependencies {
     implementation("org.siouan:frontend-gradle-plugin-jdk8:5.0.1")
-}
-
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
 }
 
 gradlePlugin {
