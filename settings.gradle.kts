@@ -7,7 +7,7 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion
         kotlin("plugin.spring") version kotlinVersion
         id("org.siouan.frontend-jdk8") version "5.0.1"
-        id("org.springframework.boot") version "2.3.3.RELEASE"
+        id("org.springframework.boot") version "2.7.8"
     }
 
     repositories {
