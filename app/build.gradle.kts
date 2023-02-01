@@ -1,22 +1,21 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    kotlin("jvm")
     application
 }
 
-repositories {
-    mavenCentral()
-}
+val javaVersion = "17"
+java.sourceCompatibility = JavaVersion.toVersion(javaVersion)
+java.targetCompatibility = java.sourceCompatibility
 
-dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = javaVersion
+    }
 }
 
 application {
     mainClass.set("testerum.AppKt")
 }
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
-
