@@ -1,0 +1,2446 @@
+$ git log -1           
+commit 04cddb1a5ce7291c713f6503e319633a2aa9e920 (HEAD -> cleanup, origin/cleanup)
+Author: Cristian Mocanu <cvmocanu@gmail.com>
+Date:   Wed Feb 1 21:00:45 2023 +0100
+
+    move everything to the old/ directory
+
+
+[INFO] Disabling enhanced local repository: using legacy is strongly discouraged to ensure build reproducibility.
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] testerum                                                           [pom]
+[INFO] common                                                             [pom]
+[INFO] common-jdk                                                         [jar]
+[INFO] common-kotlin                                                      [jar]
+[INFO] common-nashorn                                                     [jar]
+[INFO] common-expression-evaluator                                        [jar]
+[INFO] model                                                              [jar]
+[INFO] common-crypto                                                      [jar]
+[INFO] common-di                                                          [jar]
+[INFO] cloud-client                                                       [jar]
+[INFO] common-parsing                                                     [jar]
+[INFO] common-json-diff-util                                              [jar]
+[INFO] assertion-functions                                                [jar]
+[INFO] common-angular                                                     [jar]
+[INFO] common-cmdline                                                     [jar]
+[INFO] common-fsnotifier                                                  [jar]
+[INFO] common-httpclient                                                  [jar]
+[INFO] common-logging                                                     [jar]
+[INFO] common-rdbms                                                       [jar]
+[INFO] common-json-diff                                                   [jar]
+[INFO] common-profiles                                                    [jar]
+[INFO] common-json                                                        [jar]
+[INFO] common-fast-serialization                                          [jar]
+[INFO] common-stats                                                       [jar]
+[INFO] common-encrypted-prefs                                             [jar]
+[INFO] test-file-format                                                   [jar]
+[INFO] settings                                                           [jar]
+[INFO] testerum-backend                                                   [pom]
+[INFO] testerum-scanner                                                   [jar]
+[INFO] testerum-runner                                                    [pom]
+[INFO] testerum-runner-api                                                [jar]
+[INFO] file-service                                                       [jar]
+[INFO] project-manager                                                    [jar]
+[INFO] report                                                             [pom]
+[INFO] report-generators                                                  [jar]
+[INFO] report-server                                                      [pom]
+[INFO] report-server-frontend                                             [jar]
+[INFO] report-server-backend                                              [jar]
+[INFO] step-util                                                          [pom]
+[INFO] step-rdbms-util                                                    [jar]
+[INFO] step-transformer-utils                                             [jar]
+[INFO] steps                                                              [pom]
+[INFO] tools                                                              [pom]
+[INFO] testerum-extensions-maven-plugin                          [maven-plugin]
+[INFO] assertion-steps                                                    [jar]
+[INFO] debug-steps                                                        [jar]
+[INFO] json-steps                                                         [jar]
+[INFO] rdbms-steps                                                        [jar]
+[INFO] http-steps                                                         [jar]
+[INFO] selenium-steps                                                     [jar]
+[INFO] test-steps                                                         [jar]
+[INFO] util-steps                                                         [jar]
+[INFO] vars-steps                                                         [jar]
+[INFO] basic-steps-package                                                [pom]
+[INFO] testerum-scanner-it                                                [pom]
+[INFO] testerum-scanner-it-steplib1                                       [jar]
+[INFO] testerum-scanner-it-steplib2                                       [jar]
+[INFO] testerum-scanner-it-steplib3-java                                  [jar]
+[INFO] testerum-scanner-it-test                                           [jar]
+[INFO] testerum-runner-cmdline                                            [jar]
+[INFO] testerum-junit                                                     [jar]
+[INFO] testerum-junit-all                                                 [jar]
+[INFO] testerum-runner-cmdline-debug                                      [jar]
+[INFO] testerum-runner-spring                                             [jar]
+[INFO] web                                                                [pom]
+[INFO] web-frontend                                                       [jar]
+[INFO] web-launcher                                                       [jar]
+[INFO] web-backend                                                        [jar]
+[INFO] integration-tests                                                  [jar]
+[INFO] 
+[INFO] ----------------------< com.testerum:common-jdk >-----------------------
+[INFO] Building common-jdk develop-SNAPSHOT                              [3/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-jdk ---
+[INFO] com.testerum:common-jdk:jar:develop-SNAPSHOT
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ---------------------< com.testerum:common-kotlin >---------------------
+[INFO] Building common-kotlin develop-SNAPSHOT                           [4/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-kotlin ---
+[INFO] com.testerum:common-kotlin:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] \- commons-io:commons-io:jar:2.6:compile
+[INFO] 
+[INFO] --------------------< com.testerum:common-nashorn >---------------------
+[INFO] Building common-nashorn develop-SNAPSHOT                          [5/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-nashorn ---
+[INFO] com.testerum:common-nashorn:jar:develop-SNAPSHOT
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] --------------< com.testerum:common-expression-evaluator >--------------
+[INFO] Building common-expression-evaluator develop-SNAPSHOT             [6/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-expression-evaluator ---
+[INFO] com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO]    \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] 
+[INFO] -------------------------< com.testerum:model >-------------------------
+[INFO] Building model develop-SNAPSHOT                                   [7/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ model ---
+[INFO] com.testerum:model:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] \- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:test
+[INFO]    +- org.apache.commons:commons-text:jar:1.6:test
+[INFO]    +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:test
+[INFO]    |  \- org.webjars.bower:js-beautify:jar:1.6.12:test
+[INFO]    +- com.github.javafaker:javafaker:jar:1.0.2:test
+[INFO]    \- com.github.mifmif:generex:jar:1.0.2:test
+[INFO]       \- dk.brics.automaton:automaton:jar:1.11-8:test
+[INFO] 
+[INFO] ---------------------< com.testerum:common-crypto >---------------------
+[INFO] Building common-crypto develop-SNAPSHOT                           [8/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-crypto ---
+[INFO] com.testerum:common-crypto:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- org.bouncycastle:bcpkix-jdk15on:jar:1.60:compile
+[INFO] |  \- org.bouncycastle:bcprov-jdk15on:jar:1.60:compile
+[INFO] +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:test
+[INFO] 
+[INFO] -----------------------< com.testerum:common-di >-----------------------
+[INFO] Building common-di develop-SNAPSHOT                               [9/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-di ---
+[INFO] com.testerum:common-di:jar:develop-SNAPSHOT
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ---------------------< com.testerum:cloud-client >----------------------
+[INFO] Building cloud-client develop-SNAPSHOT                           [10/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ cloud-client ---
+[INFO] com.testerum:cloud-client:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:common-crypto:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.60:compile
+[INFO] |  |  \- org.bouncycastle:bcprov-jdk15on:jar:1.60:compile
+[INFO] |  \- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |  \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] +- org.quartz-scheduler:quartz:jar:2.3.1:compile
+[INFO] \- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO]    +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO]    +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO]    \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] 
+[INFO] --------------------< com.testerum:common-parsing >---------------------
+[INFO] Building common-parsing develop-SNAPSHOT                         [11/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-parsing ---
+[INFO] com.testerum:common-parsing:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] \- commons-io:commons-io:jar:2.6:compile
+[INFO] 
+[INFO] -----------------< com.testerum:common-json-diff-util >-----------------
+[INFO] Building common-json-diff-util develop-SNAPSHOT                  [12/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-json-diff-util ---
+[INFO] com.testerum:common-json-diff-util:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] 
+[INFO] ------------------< com.testerum:assertion-functions >------------------
+[INFO] Building assertion-functions develop-SNAPSHOT                    [13/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ assertion-functions ---
+[INFO] com.testerum:assertion-functions:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] +- com.google.guava:guava:jar:22.0:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] --------------------< com.testerum:common-angular >---------------------
+[INFO] Building common-angular develop-SNAPSHOT                         [14/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-angular ---
+[INFO] com.testerum:common-angular:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- javax.servlet:javax.servlet-api:jar:4.0.1:compile
+[INFO] 
+[INFO] --------------------< com.testerum:common-cmdline >---------------------
+[INFO] Building common-cmdline develop-SNAPSHOT                         [15/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-cmdline ---
+[INFO] com.testerum:common-cmdline:jar:develop-SNAPSHOT
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] -------------------< com.testerum:common-fsnotifier >-------------------
+[INFO] Building common-fsnotifier develop-SNAPSHOT                      [16/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-fsnotifier ---
+[INFO] com.testerum:common-fsnotifier:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] \- org.zeroturnaround:zt-process-killer:jar:1.8:compile
+[INFO]    +- net.java.dev.jna:jna:jar:4.2.2:compile
+[INFO]    \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] 
+[INFO] -------------------< com.testerum:common-httpclient >-------------------
+[INFO] Building common-httpclient develop-SNAPSHOT                      [17/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-httpclient ---
+[INFO] com.testerum:common-httpclient:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO]    +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO]    \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] 
+[INFO] --------------------< com.testerum:common-logging >---------------------
+[INFO] Building common-logging develop-SNAPSHOT                         [18/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-logging ---
+[INFO] com.testerum:common-logging:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] +- org.slf4j:log4j-over-slf4j:jar:1.7.25:runtime
+[INFO] +- ch.qos.logback:logback-classic:jar:1.2.2:runtime
+[INFO] |  \- ch.qos.logback:logback-core:jar:1.2.2:runtime
+[INFO] \- org.logback-extensions:logback-ext-spring:jar:0.1.1:compile
+[INFO] 
+[INFO] ---------------------< com.testerum:common-rdbms >----------------------
+[INFO] Building common-rdbms develop-SNAPSHOT                           [19/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-rdbms ---
+[INFO] com.testerum:common-rdbms:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] -------------------< com.testerum:common-json-diff >--------------------
+[INFO] Building common-json-diff develop-SNAPSHOT                       [20/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-json-diff ---
+[INFO] com.testerum:common-json-diff:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] |  +- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |  \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] +- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] +- commons-io:commons-io:jar:2.6:test
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.25:test
+[INFO] \- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] 
+[INFO] --------------------< com.testerum:common-profiles >--------------------
+[INFO] Building common-profiles develop-SNAPSHOT                        [21/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-profiles ---
+[INFO] com.testerum:common-profiles:jar:develop-SNAPSHOT
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:common-json >----------------------
+[INFO] Building common-json develop-SNAPSHOT                            [22/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-json ---
+[INFO] com.testerum:common-json:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] \- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] 
+[INFO] ---------------< com.testerum:common-fast-serialization >---------------
+[INFO] Building common-fast-serialization develop-SNAPSHOT              [23/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-fast-serialization ---
+[INFO] com.testerum:common-fast-serialization:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO]    +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO]    \- commons-io:commons-io:jar:2.6:compile
+[INFO] 
+[INFO] ---------------------< com.testerum:common-stats >----------------------
+[INFO] Building common-stats develop-SNAPSHOT                           [24/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-stats ---
+[INFO] com.testerum:common-stats:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] ----------------< com.testerum:common-encrypted-prefs >-----------------
+[INFO] Building common-encrypted-prefs develop-SNAPSHOT                 [25/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ common-encrypted-prefs ---
+[INFO] com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] 
+[INFO] -------------------< com.testerum:test-file-format >--------------------
+[INFO] Building test-file-format develop-SNAPSHOT                       [26/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ test-file-format ---
+[INFO] com.testerum:test-file-format:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] -----------------------< com.testerum:settings >------------------------
+[INFO] Building settings develop-SNAPSHOT                               [27/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ settings ---
+[INFO] com.testerum:settings:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |     +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] -------------------< com.testerum:testerum-backend >--------------------
+[INFO] Building testerum-backend develop-SNAPSHOT                       [28/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-backend ---
+[INFO] com.testerum:testerum-backend:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] -------------------< com.testerum:testerum-scanner >--------------------
+[INFO] Building testerum-scanner develop-SNAPSHOT                       [29/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner ---
+[INFO] com.testerum:testerum-scanner:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] --------------------< com.testerum:testerum-runner >--------------------
+[INFO] Building testerum-runner develop-SNAPSHOT                        [30/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner ---
+[INFO] com.testerum:testerum-runner:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] ------------------< com.testerum:testerum-runner-api >------------------
+[INFO] Building testerum-runner-api develop-SNAPSHOT                    [31/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-api ---
+[INFO] com.testerum:testerum-runner-api:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] ---------------------< com.testerum:file-service >----------------------
+[INFO] Building file-service develop-SNAPSHOT                           [32/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ file-service ---
+[INFO] com.testerum:file-service:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |  \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] --------------------< com.testerum:project-manager >--------------------
+[INFO] Building project-manager develop-SNAPSHOT                        [33/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ project-manager ---
+[INFO] com.testerum:project-manager:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |     +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- com.google.guava:guava:jar:22.0:compile
+[INFO]    +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO]    +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO]    +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO]    \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] 
+[INFO] ------------------------< com.testerum:report >-------------------------
+[INFO] Building report develop-SNAPSHOT                                 [34/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ report ---
+[INFO] com.testerum:report:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] -------------------< com.testerum:report-generators >-------------------
+[INFO] Building report-generators develop-SNAPSHOT                      [35/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ report-generators ---
+[INFO] com.testerum:report-generators:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] 
+[INFO] ---------------------< com.testerum:report-server >---------------------
+[INFO] Building report-server develop-SNAPSHOT                          [36/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ report-server ---
+[INFO] com.testerum:report-server:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] ----------------< com.testerum:report-server-frontend >-----------------
+[INFO] Building report-server-frontend develop-SNAPSHOT                 [37/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ report-server-frontend ---
+[INFO] com.testerum:report-server-frontend:jar:develop-SNAPSHOT
+[INFO] 
+[INFO] -----------------< com.testerum:report-server-backend >-----------------
+[INFO] Building report-server-backend develop-SNAPSHOT                  [38/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ report-server-backend ---
+[INFO] com.testerum:report-server-backend:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  |     +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |  |     \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:common-angular:jar:develop-SNAPSHOT:compile
+[INFO] |  \- javax.servlet:javax.servlet-api:jar:4.0.1:compile
+[INFO] +- com.testerum:common-logging:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] |  +- org.slf4j:log4j-over-slf4j:jar:1.7.25:runtime
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.2.2:runtime
+[INFO] |  |  \- ch.qos.logback:logback-core:jar:1.2.2:runtime
+[INFO] |  \- org.logback-extensions:logback-ext-spring:jar:0.1.1:compile
+[INFO] +- com.testerum:report-server-frontend:jar:dist:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-data-rest:jar:2.3.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-web:jar:2.3.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.3.3.RELEASE:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.11.2:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.11.2:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.3.3.RELEASE:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.37:compile
+[INFO] |  |  |  +- org.glassfish:jakarta.el:jar:3.0.3:compile
+[INFO] |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.37:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:5.2.8.RELEASE:compile
+[INFO] |  |  |  \- org.springframework:spring-beans:jar:5.2.8.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-webmvc:jar:5.2.8.RELEASE:compile
+[INFO] |  |     +- org.springframework:spring-aop:jar:5.2.8.RELEASE:compile
+[INFO] |  |     +- org.springframework:spring-context:jar:5.2.8.RELEASE:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.2.8.RELEASE:compile
+[INFO] |  \- org.springframework.data:spring-data-rest-webmvc:jar:3.3.3.RELEASE:compile
+[INFO] |     \- org.springframework.data:spring-data-rest-core:jar:3.3.3.RELEASE:compile
+[INFO] |        +- org.springframework:spring-tx:jar:5.2.8.RELEASE:compile
+[INFO] |        +- org.springframework.hateoas:spring-hateoas:jar:1.1.1.RELEASE:compile
+[INFO] |        |  \- com.jayway.jsonpath:json-path:jar:2.4.0:compile
+[INFO] |        |     \- net.minidev:json-smart:jar:2.3:compile
+[INFO] |        |        \- net.minidev:accessors-smart:jar:1.2:compile
+[INFO] |        |           \- org.ow2.asm:asm:jar:5.0.4:compile
+[INFO] |        +- org.springframework.data:spring-data-commons:jar:2.3.3.RELEASE:compile
+[INFO] |        +- org.springframework.plugin:spring-plugin-core:jar:2.0.0.RELEASE:compile
+[INFO] |        \- org.atteo:evo-inflector:jar:1.2.2:compile
+[INFO] +- org.springframework:spring-core:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-actuator:jar:2.3.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.3.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.3.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.3.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.3.3.RELEASE:compile
+[INFO] |  |  |  \- org.apache.logging.log4j:log4j-to-slf4j:jar:2.13.3:compile
+[INFO] |  |  |     \- org.apache.logging.log4j:log4j-api:jar:2.13.3:compile
+[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |  +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.3.3.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-actuator:jar:2.3.3.RELEASE:compile
+[INFO] |  \- io.micrometer:micrometer-core:jar:1.5.4:compile
+[INFO] |     +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |     \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] 
+[INFO] -----------------------< com.testerum:step-util >-----------------------
+[INFO] Building step-util develop-SNAPSHOT                              [39/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ step-util ---
+[INFO] com.testerum:step-util:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] --------------------< com.testerum:step-rdbms-util >--------------------
+[INFO] Building step-rdbms-util develop-SNAPSHOT                        [40/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ step-rdbms-util ---
+[INFO] com.testerum:step-rdbms-util:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.google.guava:guava:jar:22.0:compile
+[INFO] |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- commons-io:commons-io:jar:2.6:compile
+[INFO] \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] 
+[INFO] ----------------< com.testerum:step-transformer-utils >-----------------
+[INFO] Building step-transformer-utils develop-SNAPSHOT                 [41/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ step-transformer-utils ---
+[INFO] com.testerum:step-transformer-utils:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] -------------------------< com.testerum:steps >-------------------------
+[INFO] Building steps develop-SNAPSHOT                                  [42/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ steps ---
+[INFO] com.testerum:steps:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] -------------------------< com.testerum:tools >-------------------------
+[INFO] Building tools develop-SNAPSHOT                                  [43/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ tools ---
+[INFO] com.testerum:tools:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] -----------< com.testerum:testerum-extensions-maven-plugin >------------
+[INFO] Building testerum-extensions-maven-plugin develop-SNAPSHOT       [44/69]
+[INFO] ----------------------------[ maven-plugin ]----------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-extensions-maven-plugin ---
+[INFO] com.testerum:testerum-extensions-maven-plugin:maven-plugin:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.apache.maven:maven-core:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-model:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-settings:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-settings-builder:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-repository-metadata:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-artifact:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-model-builder:jar:3.0.5:compile
+[INFO] |  +- org.apache.maven:maven-aether-provider:jar:3.0.5:compile
+[INFO] |  |  \- org.sonatype.aether:aether-spi:jar:1.13.1:compile
+[INFO] |  +- org.sonatype.aether:aether-impl:jar:1.13.1:compile
+[INFO] |  +- org.sonatype.aether:aether-api:jar:1.13.1:compile
+[INFO] |  +- org.sonatype.aether:aether-util:jar:1.13.1:compile
+[INFO] |  +- org.sonatype.sisu:sisu-inject-plexus:jar:2.3.0:compile
+[INFO] |  |  \- org.sonatype.sisu:sisu-inject-bean:jar:2.3.0:compile
+[INFO] |  |     \- org.sonatype.sisu:sisu-guice:jar:no_aop:3.1.0:compile
+[INFO] |  |        \- org.sonatype.sisu:sisu-guava:jar:0.9.9:compile
+[INFO] |  +- org.codehaus.plexus:plexus-interpolation:jar:1.14:compile
+[INFO] |  +- org.codehaus.plexus:plexus-utils:jar:2.0.6:compile
+[INFO] |  +- org.codehaus.plexus:plexus-classworlds:jar:2.4:compile
+[INFO] |  +- org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+[INFO] |  \- org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile
+[INFO] |     \- org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[INFO] +- org.apache.maven:maven-plugin-api:jar:3.0.5:compile
+[INFO] +- org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.4:compile
+[INFO] +- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] \- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] 
+[INFO] --------------------< com.testerum:assertion-steps >--------------------
+[INFO] Building assertion-steps develop-SNAPSHOT                        [45/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ assertion-steps ---
+[INFO] com.testerum:assertion-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:debug-steps >----------------------
+[INFO] Building debug-steps develop-SNAPSHOT                            [46/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ debug-steps ---
+[INFO] com.testerum:debug-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:json-steps >-----------------------
+[INFO] Building json-steps develop-SNAPSHOT                             [47/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ json-steps ---
+[INFO] com.testerum:json-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |     +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |     +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] |     +- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |     |  \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |     \- com.google.guava:guava:jar:22.0:compile
+[INFO] |        +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |        +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |        +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |        \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] ----------------------< com.testerum:rdbms-steps >----------------------
+[INFO] Building rdbms-steps develop-SNAPSHOT                            [48/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ rdbms-steps ---
+[INFO] com.testerum:rdbms-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] |  |  \- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |     \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  \- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.google.guava:guava:jar:22.0:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:http-steps >-----------------------
+[INFO] Building http-steps develop-SNAPSHOT                             [49/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ http-steps ---
+[INFO] com.testerum:http-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] |  |  +- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |  |  \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |  |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:compile
+[INFO] 
+[INFO] --------------------< com.testerum:selenium-steps >---------------------
+[INFO] Building selenium-steps develop-SNAPSHOT                         [50/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ selenium-steps ---
+[INFO] com.testerum:selenium-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:compile
+[INFO] |  +- net.bytebuddy:byte-buddy:jar:1.8.3:compile
+[INFO] |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  +- com.google.code.gson:gson:jar:2.8.4:compile
+[INFO] |  +- com.google.guava:guava:jar:22.0:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:compile
+[INFO] |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:compile
+[INFO] |  \- com.squareup.okio:okio:jar:1.14.1:compile
+[INFO] +- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] ----------------------< com.testerum:test-steps >-----------------------
+[INFO] Building test-steps develop-SNAPSHOT                             [51/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ test-steps ---
+[INFO] com.testerum:test-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:util-steps >-----------------------
+[INFO] Building util-steps develop-SNAPSHOT                             [52/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ util-steps ---
+[INFO] com.testerum:util-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:vars-steps >-----------------------
+[INFO] Building vars-steps develop-SNAPSHOT                             [53/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ vars-steps ---
+[INFO] com.testerum:vars-steps:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] ------------------< com.testerum:basic-steps-package >------------------
+[INFO] Building basic-steps-package develop-SNAPSHOT                    [54/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ basic-steps-package ---
+[INFO] com.testerum:basic-steps-package:pom:develop-SNAPSHOT
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |     \- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] |     +- com.google.guava:guava:jar:22.0:compile
+[INFO] |     |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |     +- commons-io:commons-io:jar:2.6:compile
+[INFO] |     \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |  |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |  |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:compile
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.4:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:compile
+[INFO] |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:compile
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.14.1:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] \- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO]    +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO]    +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO]    +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO]    \- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] 
+[INFO] ------------------< com.testerum:testerum-scanner-it >------------------
+[INFO] Building testerum-scanner-it develop-SNAPSHOT                    [55/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it ---
+[INFO] com.testerum:testerum-scanner-it:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] -------------< com.testerum:testerum-scanner-it-steplib1 >--------------
+[INFO] Building testerum-scanner-it-steplib1 develop-SNAPSHOT           [56/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib1 ---
+[INFO] com.testerum:testerum-scanner-it-steplib1:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] -------------< com.testerum:testerum-scanner-it-steplib2 >--------------
+[INFO] Building testerum-scanner-it-steplib2 develop-SNAPSHOT           [57/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib2 ---
+[INFO] com.testerum:testerum-scanner-it-steplib2:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] 
+[INFO] -----------< com.testerum:testerum-scanner-it-steplib3-java >-----------
+[INFO] Building testerum-scanner-it-steplib3-java develop-SNAPSHOT      [58/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib3-java ---
+[INFO] com.testerum:testerum-scanner-it-steplib3-java:jar:develop-SNAPSHOT
+[INFO] \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO]    |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO]    |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] 
+[INFO] ---------------< com.testerum:testerum-scanner-it-test >----------------
+[INFO] Building testerum-scanner-it-test develop-SNAPSHOT               [59/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-test ---
+[INFO] com.testerum:testerum-scanner-it-test:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:testerum-scanner-it-steplib1:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-scanner-it-steplib2:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-scanner-it-steplib3-java:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] ----------------< com.testerum:testerum-runner-cmdline >----------------
+[INFO] Building testerum-runner-cmdline develop-SNAPSHOT                [60/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-cmdline ---
+[INFO] com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  |     +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |  |     \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  +- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |     +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
+[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
+[INFO] 
+[INFO] --------------------< com.testerum:testerum-junit >---------------------
+[INFO] Building testerum-junit develop-SNAPSHOT                         [61/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-junit ---
+[INFO] com.testerum:testerum-junit:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |  |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |  |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |  |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-simple:jar:1.7.25:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:compile
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:compile
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:compile
+[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:test
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:test
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:test
+[INFO] |  |     \- org.codehaus.janino:janino:jar:3.0.7:test
+[INFO] |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:test
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:test
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:test
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:test
+[INFO] |     \- org.flywaydb:flyway-core:jar:4.1.2:test
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:test
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:test
+[INFO] |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.4:test
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:compile
+[INFO] |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:test
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.14.1:test
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:test
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:test
+[INFO] 
+[INFO] ------------------< com.testerum:testerum-junit-all >-------------------
+[INFO] Building testerum-junit-all develop-SNAPSHOT                     [62/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-junit-all ---
+[INFO] com.testerum:testerum-junit-all:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-junit:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.slf4j:slf4j-simple:jar:1.7.25:compile
+[INFO] |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |     \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |     \- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] |     +- com.google.guava:guava:jar:22.0:compile
+[INFO] |     |  +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |     +- commons-io:commons-io:jar:2.6:compile
+[INFO] |     \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |  |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |  |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:compile
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.4:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:compile
+[INFO] |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:compile
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.14.1:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO] 
+[INFO] -------------< com.testerum:testerum-runner-cmdline-debug >-------------
+[INFO] Building testerum-runner-cmdline-debug develop-SNAPSHOT          [63/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-cmdline-debug ---
+[INFO] com.testerum:testerum-runner-cmdline-debug:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |  |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |  |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |  |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |  |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |  |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] |  +- org.slf4j:slf4j-simple:jar:1.7.25:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |     +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |     \- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] |     \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:compile
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- commons-codec:commons-codec:jar:1.10:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.4:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:compile
+[INFO] |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:compile
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.14.1:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO] 
+[INFO] ----------------< com.testerum:testerum-runner-spring >-----------------
+[INFO] Building testerum-runner-spring develop-SNAPSHOT                 [64/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-runner-spring ---
+[INFO] com.testerum:testerum-runner-spring:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] |  |  |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] |  +- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] +- org.springframework:spring-core:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-beans:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-context:jar:5.2.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.2.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-expression:jar:5.2.8.RELEASE:compile
+[INFO] \- org.springframework:spring-context-support:jar:5.2.8.RELEASE:compile
+[INFO] 
+[INFO] --------------------------< com.testerum:web >--------------------------
+[INFO] Building web develop-SNAPSHOT                                    [65/69]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web ---
+[INFO] com.testerum:web:pom:develop-SNAPSHOT
+[INFO] 
+[INFO] ---------------------< com.testerum:web-frontend >----------------------
+[INFO] Building web-frontend develop-SNAPSHOT                           [66/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-frontend ---
+[INFO] com.testerum:web-frontend:jar:develop-SNAPSHOT
+[INFO] 
+[INFO] ---------------------< com.testerum:web-launcher >----------------------
+[INFO] Building web-launcher develop-SNAPSHOT                           [67/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-launcher ---
+[INFO] com.testerum:web-launcher:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] |  \- commons-io:commons-io:jar:2.6:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.zeroturnaround:zt-process-killer:jar:1.8:compile
+[INFO] |  +- net.java.dev.jna:jna:jar:4.2.2:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- com.jgoodies:jgoodies-forms:jar:1.9.0:compile
+[INFO] |  \- com.jgoodies:jgoodies-common:jar:1.8.1:compile
+[INFO] \- com.jgoodies:looks:jar:2.2.2:compile
+[INFO] 
+[INFO] ----------------------< com.testerum:web-backend >----------------------
+[INFO] Building web-backend develop-SNAPSHOT                            [68/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web-backend ---
+[INFO] com.testerum:web-backend:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-json:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
+[INFO] +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.10:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.10:compile
+[INFO] +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:model:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6:compile
+[INFO] |  +- jaxen:jaxen:jar:1.2.0:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] +- com.testerum:settings:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:common-di:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:file-service:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- io.github.classgraph:classgraph:jar:4.8.90:compile
+[INFO] |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:compile
+[INFO] |     \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] +- com.testerum:project-manager:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.google.guava:guava:jar:22.0:compile
+[INFO] |     +- com.google.code.findbugs:jsr305:jar:1.3.9:compile
+[INFO] |     +- com.google.errorprone:error_prone_annotations:jar:2.0.18:compile
+[INFO] |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO] |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:compile
+[INFO] |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:compile
+[INFO] |  +- com.github.javafaker:javafaker:jar:1.0.2:compile
+[INFO] |  \- com.github.mifmif:generex:jar:1.0.2:compile
+[INFO] |     \- dk.brics.automaton:automaton:jar:1.11-8:compile
+[INFO] +- com.testerum:cloud-client:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-crypto:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.60:compile
+[INFO] |  |     \- org.bouncycastle:bcprov-jdk15on:jar:1.60:compile
+[INFO] |  \- org.quartz-scheduler:quartz:jar:2.3.1:compile
+[INFO] +- com.testerum:web-launcher:jar:develop-SNAPSHOT:runtime
+[INFO] |  +- com.jgoodies:jgoodies-forms:jar:1.9.0:runtime
+[INFO] |  |  \- com.jgoodies:jgoodies-common:jar:1.8.1:runtime
+[INFO] |  \- com.jgoodies:looks:jar:2.2.2:runtime
+[INFO] +- com.testerum:common-fsnotifier:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-profiles:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:common-angular:jar:develop-SNAPSHOT:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
+[INFO] +- commons-fileupload:commons-fileupload:jar:1.3.3:compile
+[INFO] +- commons-io:commons-io:jar:2.6:compile
+[INFO] +- org.springframework:spring-context:jar:5.2.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.2.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.2.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-core:jar:5.2.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-expression:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-orm:jar:5.2.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-jdbc:jar:5.2.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-tx:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-web:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-webmvc:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-test:jar:5.2.8.RELEASE:runtime
+[INFO] +- org.springframework:spring-context-support:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-websocket:jar:5.2.8.RELEASE:compile
+[INFO] +- org.springframework:spring-messaging:jar:5.2.8.RELEASE:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] +- org.slf4j:log4j-over-slf4j:jar:1.7.25:runtime
+[INFO] +- ch.qos.logback:logback-classic:jar:1.2.2:runtime
+[INFO] +- ch.qos.logback:logback-core:jar:1.2.2:runtime
+[INFO] +- org.logback-extensions:logback-ext-spring:jar:0.1.1:compile
+[INFO] +- javax.servlet:javax.servlet-api:jar:4.0.1:compile
+[INFO] +- org.zeroturnaround:zt-exec:jar:1.10:compile
+[INFO] +- org.zeroturnaround:zt-process-killer:jar:1.8:compile
+[INFO] |  +- net.java.dev.jna:jna:jar:4.2.2:compile
+[INFO] |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- org.eclipse.jetty:jetty-server:jar:9.4.27.v20200227:compile
+[INFO] |  +- org.eclipse.jetty:jetty-http:jar:9.4.27.v20200227:compile
+[INFO] |  |  \- org.eclipse.jetty:jetty-util:jar:9.4.27.v20200227:compile
+[INFO] |  \- org.eclipse.jetty:jetty-io:jar:9.4.27.v20200227:compile
+[INFO] +- org.eclipse.jetty:jetty-servlet:jar:9.4.27.v20200227:compile
+[INFO] |  \- org.eclipse.jetty:jetty-security:jar:9.4.27.v20200227:compile
+[INFO] +- org.eclipse.jetty.websocket:javax-websocket-server-impl:jar:9.4.27.v20200227:compile
+[INFO] |  +- org.eclipse.jetty:jetty-annotations:jar:9.4.27.v20200227:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-plus:jar:9.4.27.v20200227:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-jndi:jar:9.4.27.v20200227:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-webapp:jar:9.4.27.v20200227:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-xml:jar:9.4.27.v20200227:compile
+[INFO] |  |  +- javax.annotation:javax.annotation-api:jar:1.3:compile
+[INFO] |  |  +- org.ow2.asm:asm:jar:7.2:compile
+[INFO] |  |  \- org.ow2.asm:asm-commons:jar:7.2:compile
+[INFO] |  |     +- org.ow2.asm:asm-tree:jar:7.2:compile
+[INFO] |  |     \- org.ow2.asm:asm-analysis:jar:7.2:compile
+[INFO] |  +- org.eclipse.jetty.websocket:javax-websocket-client-impl:jar:9.4.27.v20200227:compile
+[INFO] |  |  +- org.eclipse.jetty.websocket:websocket-client:jar:9.4.27.v20200227:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-client:jar:9.4.27.v20200227:compile
+[INFO] |  |  \- javax.websocket:javax.websocket-client-api:jar:1.0:compile
+[INFO] |  +- org.eclipse.jetty.websocket:websocket-server:jar:9.4.27.v20200227:compile
+[INFO] |  |  +- org.eclipse.jetty.websocket:websocket-common:jar:9.4.27.v20200227:compile
+[INFO] |  |  |  \- org.eclipse.jetty.websocket:websocket-api:jar:9.4.27.v20200227:compile
+[INFO] |  |  \- org.eclipse.jetty.websocket:websocket-servlet:jar:9.4.27.v20200227:compile
+[INFO] |  \- javax.websocket:javax.websocket-api:jar:1.0:compile
+[INFO] +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:debug-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:http-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:compile
+[INFO] |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:compile
+[INFO] |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:compile
+[INFO] |  |     \- org.codehaus.janino:janino:jar:3.0.7:compile
+[INFO] |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:compile
+[INFO] |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:compile
+[INFO] +- com.testerum:json-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:compile
+[INFO] |     \- org.flywaydb:flyway-core:jar:4.1.2:compile
+[INFO] +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:compile
+[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
+[INFO] |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:compile
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:compile
+[INFO] |  |  +- org.apache.commons:commons-exec:jar:1.3:compile
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.8.4:compile
+[INFO] |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:compile
+[INFO] |  |  \- com.squareup.okio:okio:jar:1.14.1:compile
+[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
+[INFO] +- com.testerum:util-steps:jar:develop-SNAPSHOT:compile
+[INFO] +- com.testerum:vars-steps:jar:develop-SNAPSHOT:compile
+[INFO] \- com.testerum:test-steps:jar:develop-SNAPSHOT:compile
+[INFO] 
+[INFO] -------------------< com.testerum:integration-tests >-------------------
+[INFO] Building integration-tests develop-SNAPSHOT                      [69/69]
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Failed to retrieve plugin descriptor for com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT: Plugin com.testerum:testerum-extensions-maven-plugin:develop-SNAPSHOT or one of its dependencies could not be resolved: com.testerum:testerum-extensions-maven-plugin:jar:develop-SNAPSHOT was not found in https://jcenter.bintray.com/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of jcenter has elapsed or updates are forced
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ integration-tests ---
+[INFO] com.testerum:integration-tests:jar:develop-SNAPSHOT
+[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
+[INFO] +- com.testerum:testerum-junit-all:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:testerum-junit:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:testerum-runner-cmdline:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:report-generators:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  \- org.zeroturnaround:zt-exec:jar:1.10:test
+[INFO] |  |  |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-cmdline:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:testerum-runner-api:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  \- com.testerum:common-stats:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  |  \- io.github.classgraph:classgraph:jar:4.8.90:test
+[INFO] |  |  |  +- com.testerum:project-manager:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- org.slf4j:slf4j-simple:jar:1.7.25:test
+[INFO] |  |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.25:runtime
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.25:runtime
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
+[INFO] |  |  |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
+[INFO] |  +- com.testerum:assertion-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:debug-steps:jar:develop-SNAPSHOT:test
+[INFO] |  +- com.testerum:http-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-json-diff:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-json-diff-util:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  \- com.testerum:assertion-functions:jar:develop-SNAPSHOT:test
+[INFO] |  |  |     \- org.codehaus.janino:janino:jar:3.0.7:test
+[INFO] |  |  |        \- org.codehaus.janino:commons-compiler:jar:3.0.7:test
+[INFO] |  |  +- com.testerum:common-json:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  \- com.fasterxml.jackson.datatype:jackson-datatype-guava:jar:2.11.3:test
+[INFO] |  |  +- com.testerum:model:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- org.jdom:jdom2:jar:2.0.6:test
+[INFO] |  |  |  \- jaxen:jaxen:jar:1.2.0:test
+[INFO] |  |  +- com.testerum:step-transformer-utils:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:test
+[INFO] |  |  +- com.testerum:common-httpclient:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.6:test
+[INFO] |  |  \- com.github.tomakehurst:wiremock-standalone:jar:2.27.2:test
+[INFO] |  +- com.testerum:json-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-di:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:test
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:test
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:test
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:test
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:test
+[INFO] |  +- com.testerum:rdbms-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:settings:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-rdbms:jar:develop-SNAPSHOT:test
+[INFO] |  |  \- com.testerum:step-rdbms-util:jar:develop-SNAPSHOT:test
+[INFO] |  |     +- com.google.guava:guava:jar:22.0:test
+[INFO] |  |     |  +- com.google.code.findbugs:jsr305:jar:1.3.9:test
+[INFO] |  |     |  +- com.google.errorprone:error_prone_annotations:jar:2.0.18:test
+[INFO] |  |     |  +- com.google.j2objc:j2objc-annotations:jar:1.1:test
+[INFO] |  |     |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:test
+[INFO] |  |     +- commons-io:commons-io:jar:2.6:test
+[INFO] |  |     \- org.flywaydb:flyway-core:jar:4.1.2:test
+[INFO] |  +- com.testerum:selenium-steps:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:test
+[INFO] |  |  +- com.testerum:common-expression-evaluator:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- org.apache.commons:commons-text:jar:1.6:test
+[INFO] |  |  |  +- org.javadelight:delight-nashorn-sandbox:jar:0.1.19:test
+[INFO] |  |  |  |  \- org.webjars.bower:js-beautify:jar:1.6.12:test
+[INFO] |  |  |  +- com.github.javafaker:javafaker:jar:1.0.2:test
+[INFO] |  |  |  \- com.github.mifmif:generex:jar:1.0.2:test
+[INFO] |  |  |     \- dk.brics.automaton:automaton:jar:1.11-8:test
+[INFO] |  |  +- com.testerum:file-service:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:common-encrypted-prefs:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  +- com.testerum:test-file-format:jar:develop-SNAPSHOT:test
+[INFO] |  |  |  \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.3:test
+[INFO] |  |  |     \- org.yaml:snakeyaml:jar:1.26:test
+[INFO] |  |  +- org.seleniumhq.selenium:selenium-java:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-api:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-chrome-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-edge-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-firefox-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-ie-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-opera-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-remote-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-safari-driver:jar:3.13.0:test
+[INFO] |  |  |  +- org.seleniumhq.selenium:selenium-support:jar:3.13.0:test
+[INFO] |  |  |  +- net.bytebuddy:byte-buddy:jar:1.8.3:test
+[INFO] |  |  |  +- org.apache.commons:commons-exec:jar:1.3:test
+[INFO] |  |  |  +- commons-codec:commons-codec:jar:1.10:test
+[INFO] |  |  |  +- com.google.code.gson:gson:jar:2.8.4:test
+[INFO] |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.9:test
+[INFO] |  |  |  +- com.squareup.okhttp3:okhttp:jar:3.10.0:test
+[INFO] |  |  |  \- com.squareup.okio:okio:jar:1.14.1:test
+[INFO] |  |  \- org.jparsec:jparsec:jar:3.0:test
+[INFO] |  +- com.testerum:util-steps:jar:develop-SNAPSHOT:test
+[INFO] |  \- com.testerum:vars-steps:jar:develop-SNAPSHOT:test
+[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
+[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
+[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
+[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
+[INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for testerum develop-SNAPSHOT:
+[INFO] 
+[INFO] testerum ........................................... SUCCESS [  0.431 s]
+[INFO] common ............................................. SUCCESS [  0.003 s]
+[INFO] common-jdk ......................................... SUCCESS [  0.008 s]
+[INFO] common-kotlin ...................................... SUCCESS [  0.010 s]
+[INFO] common-nashorn ..................................... SUCCESS [  0.004 s]
+[INFO] common-expression-evaluator ........................ SUCCESS [  0.019 s]
+[INFO] model .............................................. SUCCESS [  0.028 s]
+[INFO] common-crypto ...................................... SUCCESS [  0.006 s]
+[INFO] common-di .......................................... SUCCESS [  0.004 s]
+[INFO] cloud-client ....................................... SUCCESS [  0.028 s]
+[INFO] common-parsing ..................................... SUCCESS [  0.005 s]
+[INFO] common-json-diff-util .............................. SUCCESS [  0.004 s]
+[INFO] assertion-functions ................................ SUCCESS [  0.011 s]
+[INFO] common-angular ..................................... SUCCESS [  0.004 s]
+[INFO] common-cmdline ..................................... SUCCESS [  0.003 s]
+[INFO] common-fsnotifier .................................. SUCCESS [  0.007 s]
+[INFO] common-httpclient .................................. SUCCESS [  0.006 s]
+[INFO] common-logging ..................................... SUCCESS [  0.009 s]
+[INFO] common-rdbms ....................................... SUCCESS [  0.005 s]
+[INFO] common-json-diff ................................... SUCCESS [  0.007 s]
+[INFO] common-profiles .................................... SUCCESS [  0.003 s]
+[INFO] common-json ........................................ SUCCESS [  0.004 s]
+[INFO] common-fast-serialization .......................... SUCCESS [  0.003 s]
+[INFO] common-stats ....................................... SUCCESS [  0.003 s]
+[INFO] common-encrypted-prefs ............................. SUCCESS [  0.003 s]
+[INFO] test-file-format ................................... SUCCESS [  0.004 s]
+[INFO] settings ........................................... SUCCESS [  0.005 s]
+[INFO] testerum-backend ................................... SUCCESS [  0.002 s]
+[INFO] testerum-scanner ................................... SUCCESS [  0.009 s]
+[INFO] testerum-runner .................................... SUCCESS [  0.002 s]
+[INFO] testerum-runner-api ................................ SUCCESS [  0.005 s]
+[INFO] file-service ....................................... SUCCESS [  0.013 s]
+[INFO] project-manager .................................... SUCCESS [  0.008 s]
+[INFO] report ............................................. SUCCESS [  0.002 s]
+[INFO] report-generators .................................. SUCCESS [  0.005 s]
+[INFO] report-server ...................................... SUCCESS [  0.002 s]
+[INFO] report-server-frontend ............................. SUCCESS [  0.004 s]
+[INFO] report-server-backend .............................. SUCCESS [  0.050 s]
+[INFO] step-util .......................................... SUCCESS [  0.001 s]
+[INFO] step-rdbms-util .................................... SUCCESS [  0.005 s]
+[INFO] step-transformer-utils ............................. SUCCESS [  0.002 s]
+[INFO] steps .............................................. SUCCESS [  0.001 s]
+[INFO] tools .............................................. SUCCESS [  0.001 s]
+[INFO] testerum-extensions-maven-plugin ................... SUCCESS [  0.034 s]
+[INFO] assertion-steps .................................... SUCCESS [  0.006 s]
+[INFO] debug-steps ........................................ SUCCESS [  0.003 s]
+[INFO] json-steps ......................................... SUCCESS [  0.006 s]
+[INFO] rdbms-steps ........................................ SUCCESS [  0.007 s]
+[INFO] http-steps ......................................... SUCCESS [  0.007 s]
+[INFO] selenium-steps ..................................... SUCCESS [  0.022 s]
+[INFO] test-steps ......................................... SUCCESS [  0.003 s]
+[INFO] util-steps ......................................... SUCCESS [  0.003 s]
+[INFO] vars-steps ......................................... SUCCESS [  0.003 s]
+[INFO] basic-steps-package ................................ SUCCESS [  0.013 s]
+[INFO] testerum-scanner-it ................................ SUCCESS [  0.002 s]
+[INFO] testerum-scanner-it-steplib1 ....................... SUCCESS [  0.002 s]
+[INFO] testerum-scanner-it-steplib2 ....................... SUCCESS [  0.001 s]
+[INFO] testerum-scanner-it-steplib3-java .................. SUCCESS [  0.002 s]
+[INFO] testerum-scanner-it-test ........................... SUCCESS [  0.005 s]
+[INFO] testerum-runner-cmdline ............................ SUCCESS [  0.010 s]
+[INFO] testerum-junit ..................................... SUCCESS [  0.017 s]
+[INFO] testerum-junit-all ................................. SUCCESS [  0.016 s]
+[INFO] testerum-runner-cmdline-debug ...................... SUCCESS [  0.018 s]
+[INFO] testerum-runner-spring ............................. SUCCESS [  0.006 s]
+[INFO] web ................................................ SUCCESS [  0.002 s]
+[INFO] web-frontend ....................................... SUCCESS [  0.001 s]
+[INFO] web-launcher ....................................... SUCCESS [  0.006 s]
+[INFO] web-backend ........................................ SUCCESS [  0.073 s]
+[INFO] integration-tests .................................. SUCCESS [  0.028 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.505 s
+[INFO] Finished at: 2023-02-01T21:01:55+01:00
+[INFO] ------------------------------------------------------------------------
