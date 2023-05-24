@@ -2,8 +2,8 @@
 
 ### Setup frontend (Angular)
 
-Install NodeJs
-npm install -g @angular/cli@1.7.3
+Install NodeJs 18.16.0
+npm install -g @angular/cli@11.1.4
 run start.bat or start.sh
 
 
