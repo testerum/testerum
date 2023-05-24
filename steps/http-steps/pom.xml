@@ -67,6 +67,12 @@
             <artifactId>wiremock-standalone</artifactId>
         </dependency>
 
+        <!-- javax.annotation-api -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
     </dependencies>
 
 

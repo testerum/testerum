@@ -63,7 +63,7 @@ class FastOutput(
     fun writeChar(propName: String, propValue: Char) {
         out.writeUTF(propName)
         out.writeByte(TYPE_CHAR)
-        out.writeChar(propValue.toInt())
+        out.writeChar(propValue.code)
     }
 
     fun writeLong(propName: String, propValue: Long) {

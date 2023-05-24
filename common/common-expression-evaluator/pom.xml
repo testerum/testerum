@@ -44,12 +44,6 @@
             <artifactId>commons-text</artifactId>
         </dependency>
 
-        <!-- delight-nashorn-sandbox -->
-        <dependency>
-            <groupId>org.javadelight</groupId>
-            <artifactId>delight-nashorn-sandbox</artifactId>
-        </dependency>
-
         <!-- JavaFaker - lib to generate fake data -->
         <dependency>
             <groupId>com.github.javafaker</groupId>
@@ -60,6 +54,12 @@
         <dependency>
             <groupId>com.github.mifmif</groupId>
             <artifactId>generex</artifactId>
+        </dependency>
+
+        <!-- nashorn-core -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
         </dependency>
     </dependencies>
 

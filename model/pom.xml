@@ -90,6 +90,12 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- nashorn-core -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+        </dependency>
+
 
         <!--==================== test dependencies ====================-->
 

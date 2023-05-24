@@ -3,7 +3,7 @@ package com.testerum.model.expressions.json
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.model.expressions.json.util.JSON_STEPS_OBJECT_MAPPER
 import com.testerum.model.expressions.json.util.MapMerger
-import jdk.nashorn.api.scripting.AbstractJSObject
+import org.openjdk.nashorn.api.scripting.AbstractJSObject
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.write
 

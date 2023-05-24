@@ -1,12 +1,12 @@
 package com.testerum.model.resources.http.response.xml_body
 
 import com.testerum.model.resources.http.response.xml_body.functions.impl.XPathXmlJsFunction
-import jdk.nashorn.api.scripting.AbstractJSObject
-import jdk.nashorn.api.scripting.JSObject
 import org.jdom2.Document
 import org.jdom2.Element
 import org.jdom2.input.SAXBuilder
 import org.jdom2.located.LocatedJDOMFactory
+import org.openjdk.nashorn.api.scripting.AbstractJSObject
+import org.openjdk.nashorn.api.scripting.JSObject
 
 typealias XmlFunctionFactory = (element: Element) -> JSObject
 

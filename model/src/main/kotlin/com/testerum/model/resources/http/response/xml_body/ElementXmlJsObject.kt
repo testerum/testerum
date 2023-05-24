@@ -5,8 +5,8 @@ import com.testerum.model.resources.http.response.xml_body.functions.impl.GetChi
 import com.testerum.model.resources.http.response.xml_body.functions.impl.GetTextXmlJsFunction
 import com.testerum.model.resources.http.response.xml_body.functions.impl.XPathXmlJsFunction
 import com.testerum.model.resources.http.response.xml_body.utils.getChildrenByNameAsXmlJsObjects
-import jdk.nashorn.api.scripting.AbstractJSObject
 import org.jdom2.Element
+import org.openjdk.nashorn.api.scripting.AbstractJSObject
 
 class ElementXmlJsObject(private val element: Element) : AbstractJSObject() {
 
@@ -47,4 +47,3 @@ class ElementXmlJsObject(private val element: Element) : AbstractJSObject() {
         throw UnsupportedOperationException("it is not allowed to modify the XML document")
     }
 }
-

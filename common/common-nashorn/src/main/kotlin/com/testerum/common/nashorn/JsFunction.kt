@@ -1,6 +1,6 @@
 package com.testerum.common.nashorn
 
-import jdk.nashorn.api.scripting.AbstractJSObject
+import org.openjdk.nashorn.api.scripting.AbstractJSObject
 
 abstract class JsFunction : AbstractJSObject() {
 

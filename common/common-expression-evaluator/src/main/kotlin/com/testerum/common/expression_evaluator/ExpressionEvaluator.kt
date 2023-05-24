@@ -11,7 +11,7 @@ import com.testerum.common.expression_evaluator.helpers.impl.EscapeHelper
 import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.TestHelper
 import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
-import jdk.nashorn.internal.runtime.ECMAException
+import org.openjdk.nashorn.internal.runtime.ECMAException
 import javax.script.Bindings
 import javax.script.ScriptEngineManager
 
