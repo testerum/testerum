@@ -31,10 +31,10 @@ object StepsTreeFilterer {
     }
 
     private fun tagListMatchesTagsFilterCriteria(tags: List<String>, stepsTreeFilter: StepsTreeFilter): Boolean {
-        val upperCasedTags = tags.map(String::toUpperCase)
+        val upperCasedTags = tags.map(String::uppercase)
 
         return upperCasedTags.containsAll(
-                stepsTreeFilter.tags.map(String::toUpperCase)
+                stepsTreeFilter.tags.map(String::uppercase)
         )
     }
 

@@ -10,7 +10,7 @@ import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
-import java.util.EnumSet
+import java.util.*
 
 class ManualTestsTreeBuilder(testPlanName: String) {
 
@@ -65,7 +65,7 @@ class ManualTestsTreeBuilder(testPlanName: String) {
                             path = Path(directories = path),
                             name = label,
                             status = status,
-                            children = children.sortedBy { it.path.withoutFileExtension().toString().toLowerCase() }
+                            children = children.sortedBy { it.path.withoutFileExtension().toString().lowercase() }
                     )
                 }
                 is ManualTest -> ManualTestsStatusTreeNode(

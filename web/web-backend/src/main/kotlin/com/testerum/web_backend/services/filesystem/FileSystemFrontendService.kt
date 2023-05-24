@@ -1,7 +1,12 @@
 package com.testerum.web_backend.services.filesystem
 
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.canCreateChild
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.hasSubDirectories
+import com.testerum.common_kotlin.isDirectory
+import com.testerum.common_kotlin.isRegularFile
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
@@ -25,7 +30,7 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
 
         private val FS_ENTRIES_COMPARATOR: Comparator<FileSystemEntry> = compareBy<FileSystemEntry>(
                 { if (it is FileSystemDirectory) 0 else 1 }, // directories before files
-                { it.name.toLowerCase() }
+                { it.name.lowercase() }
         )
     }
 

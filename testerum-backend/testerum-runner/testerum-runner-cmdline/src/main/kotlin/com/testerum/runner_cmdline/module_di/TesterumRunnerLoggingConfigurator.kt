@@ -39,8 +39,8 @@ object TesterumRunnerLoggingConfigurator {
         val fullKey = "org.slf4j.simpleLogger.log.$loggerName"
         val shadedFullKey = "org.slf4j.simpleLogger.log.com.testerum.shaded.$loggerName"
 
-        setPropertyIfNotAlreadySet(fullKey, logLevel.name.toLowerCase())
-        setPropertyIfNotAlreadySet(shadedFullKey, logLevel.name.toLowerCase())
+        setPropertyIfNotAlreadySet(fullKey, logLevel.name.lowercase())
+        setPropertyIfNotAlreadySet(shadedFullKey, logLevel.name.lowercase())
     }
 
     private fun setPropertyIfNotAlreadySet(key: String, value: String) {

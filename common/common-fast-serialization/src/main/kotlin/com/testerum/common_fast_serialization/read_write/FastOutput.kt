@@ -12,10 +12,10 @@ class FastOutput(
 
     companion object {
         internal val FILE_FORMAT_SIGNATURE = byteArrayOf(
-            'T'.toByte(),  // Testerum
-            'F'.toByte(),  // Fast
-            'S'.toByte(),  // Serialization
-            'F'.toByte()   // Format
+            'T'.code.toByte(),  // Testerum
+            'F'.code.toByte(),  // Fast
+            'S'.code.toByte(),  // Serialization
+            'F'.code.toByte()   // Format
         )
         internal const val FILE_FORMAT_VERSION: Int = 1
 

@@ -27,7 +27,7 @@ object TesterumGlueTestScope : Scope {
         destructionCallbacks[name] = callback
     }
 
-    override fun resolveContextualObject(key: String?): Any?
+    override fun resolveContextualObject(key: String): Any?
             = null
 
     fun beforeTest() {

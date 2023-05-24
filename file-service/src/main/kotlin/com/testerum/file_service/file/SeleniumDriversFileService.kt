@@ -17,7 +17,7 @@ import com.testerum.model.selenium.SeleniumDriverInfo
 import com.testerum.model.selenium.SeleniumDriversByBrowser
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import org.slf4j.LoggerFactory
-import java.util.TreeMap
+import java.util.*
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -49,7 +49,7 @@ class SeleniumDriversFileService {
         val browserPaths = seleniumDriversDir.list()
 
         for (browserPath in browserPaths) {
-            val browserTypeCode = browserPath.fileName?.toString()?.toUpperCase() ?: ""
+            val browserTypeCode = browserPath.fileName?.toString()?.uppercase() ?: ""
             val browserType = SeleniumBrowserType.safeValueOf(browserTypeCode)
 
             if (browserType == null) {

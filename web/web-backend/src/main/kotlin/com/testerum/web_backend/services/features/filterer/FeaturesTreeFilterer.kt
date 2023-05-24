@@ -52,10 +52,10 @@ object FeaturesTreeFilterer {
     }
 
     private fun matchesTags(tags: List<String>, filterTags: List<String>): Boolean {
-        val featureUpperCasedTags = tags.map(String::toUpperCase)
+        val featureUpperCasedTags = tags.map(String::uppercase)
 
         return featureUpperCasedTags.containsAll(
-                filterTags.map(String::toUpperCase)
+                filterTags.map(String::uppercase)
         )
     }
 

@@ -134,7 +134,7 @@ class ManualTestPlansFrontendService(private val webProjectManager: WebProjectMa
         val notExecutedOrInProgressTests = testsWithFinalizedFlag.count { it.status == ManualTestStatus.NOT_EXECUTED || it.status == ManualTestStatus.IN_PROGRESS }
 
         return plan.copy(
-                manualTreeTests = manualTreeTests.sortedBy { it.path.withoutFileExtension().toString().toLowerCase() },
+                manualTreeTests = manualTreeTests.sortedBy { it.path.withoutFileExtension().toString().lowercase() },
                 passedTests = passedTests,
                 failedTests = failedTests,
                 blockedTests = blockedTests,

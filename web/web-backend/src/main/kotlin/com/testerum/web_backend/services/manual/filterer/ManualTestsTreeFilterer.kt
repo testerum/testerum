@@ -29,10 +29,10 @@ object ManualTestsTreeFilterer {
     }
 
     private fun matchesTags(tags: List<String>, filterTags: List<String>): Boolean {
-        val upperCasedTags = tags.map(String::toUpperCase)
+        val upperCasedTags = tags.map(String::uppercase)
 
         return upperCasedTags.containsAll(
-                filterTags.map(String::toUpperCase)
+                filterTags.map(String::uppercase)
         )
     }
 

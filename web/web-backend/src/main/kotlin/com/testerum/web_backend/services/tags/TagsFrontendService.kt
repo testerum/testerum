@@ -15,8 +15,8 @@ class TagsFrontendService(private val webProjectManager: WebProjectManager) {
 
         // sort and keep only distinct values at the sa
 
-        return result.distinctBy(String::toLowerCase)
-                .sortedBy(String::toLowerCase)
+        return result.distinctBy(String::lowercase)
+                .sortedBy(String::lowercase)
     }
 
     fun getManualTestsTags(): List<String> {

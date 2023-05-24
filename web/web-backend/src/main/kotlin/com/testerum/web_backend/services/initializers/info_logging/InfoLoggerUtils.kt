@@ -34,7 +34,7 @@ object InfoLoggerUtils {
 
     private fun getValueToDisplay(key: String?,
                                   value: String): String {
-        return if (key != null && key.toLowerCase().contains("pass")) {
+        return if (key != null && key.lowercase().contains("pass")) {
             "****************************************"
         } else {
             value
