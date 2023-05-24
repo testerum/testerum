@@ -89,9 +89,9 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.4.31</kotlin.version>
-        <kotlin.apiVersion>1.4</kotlin.apiVersion>
-        <kotlin.languageVersion>1.4</kotlin.languageVersion>
+        <kotlin.version>1.8.21</kotlin.version>
+        <kotlin.apiVersion>1.8</kotlin.apiVersion>
+        <kotlin.languageVersion>1.8</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
@@ -1174,7 +1174,7 @@
                 <plugin>
                     <groupId>org.jetbrains.dokka</groupId>
                     <artifactId>dokka-maven-plugin</artifactId>
-                    <version>0.9.18</version>
+                    <version>1.8.10</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
