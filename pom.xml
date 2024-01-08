@@ -861,7 +861,7 @@
             <dependency>
                 <groupId>org.javadelight</groupId>
                 <artifactId>delight-nashorn-sandbox</artifactId>
-                <version>0.1.19</version>
+                <version>0.3.1</version>
             </dependency>
 
             <!--==================== ZERO TURN AROUND ====================-->
